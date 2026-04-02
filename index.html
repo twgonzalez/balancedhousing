@@ -107,46 +107,86 @@ nav {
 .hero-content {
   position: relative; z-index: 2;
   max-width: var(--max-w); margin: 0 auto;
-  padding: 120px 40px 80px;
+  padding: 110px 40px 80px;
   width: 100%;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
 }
 .hero-eyebrow {
   font-family: 'Cormorant SC', serif;
   font-size: 11px; letter-spacing: .32em;
-  color: var(--ember); margin-bottom: 20px;
+  color: var(--ember); margin-bottom: 40px;
   opacity: 0; animation: fadeUp .8s .2s forwards;
 }
 .hero-headline {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 700; line-height: 1.1;
-  color: #fff; margin-bottom: 12px;
-  max-width: 700px;
-  opacity: 0; animation: fadeUp .8s .35s forwards;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(245,239,226,.4);
+  margin-bottom: 40px;
+  display: flex; align-items: center; gap: 16px;
+  width: 100%; max-width: 760px;
+  opacity: 0; animation: fadeUp .8s .3s forwards;
 }
-.hero-headline em {
-  color: var(--ember); font-style: italic; display: block;
+.hero-headline::before, .hero-headline::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,154,40,.25));
+}
+.hero-headline::after { background: linear-gradient(270deg, transparent, rgba(196,154,40,.25)); }
+.hero-headline em { font-style: normal; white-space: nowrap; }
+.hero-ballot {
+  position: relative;
+  max-width: 780px;
+  margin-bottom: 0;
+  opacity: 0; animation: fadeUp .8s .45s forwards;
+}
+.hero-ballot-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(100px, 14vw, 160px);
+  line-height: .65;
+  color: var(--ember);
+  opacity: .18;
+  position: absolute;
+  top: -10px; left: -16px;
+  pointer-events: none; user-select: none;
+}
+.hero-ballot-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 3.2vw, 44px);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--linen);
+  letter-spacing: -.01em;
+  position: relative; z-index: 1;
+}
+.hero-ballot-attr {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ember); opacity: .65;
+  margin-top: 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.hero-ballot-attr::before, .hero-ballot-attr::after {
+  content: ''; display: block;
+  width: 28px; height: 1px;
+  background: rgba(196,154,40,.4);
+}
+.hero-rule {
+  width: 1px; height: 44px;
+  background: linear-gradient(to bottom, rgba(196,154,40,.35), transparent);
+  margin: 36px auto;
+  opacity: 0; animation: fadeUp .8s .6s forwards;
 }
 .hero-sub {
   font-family: 'EB Garamond', serif;
-  font-size: clamp(16px, 2vw, 20px); font-style: italic;
-  line-height: 1.6; color: rgba(255,255,255,.65);
-  max-width: 580px; margin-bottom: 40px;
-  opacity: 0; animation: fadeUp .8s .5s forwards;
+  font-size: clamp(15px, 1.8vw, 19px); font-style: italic;
+  line-height: 1.65; color: rgba(255,255,255,.55);
+  max-width: 520px; margin-bottom: 40px;
+  opacity: 0; animation: fadeUp .8s .7s forwards;
 }
-.hero-sentence {
-  border-left: 3px solid var(--ember);
-  padding-left: 20px; margin-bottom: 48px;
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(13px, 1.4vw, 16px);
-  line-height: 1.65; color: rgba(255,255,255,.75);
-  max-width: 600px;
-  opacity: 0; animation: fadeUp .8s .65s forwards;
-}
-.hero-sentence em { color: var(--ember); font-style: italic; }
+.hero-sentence { display: none; }
 .hero-actions {
-  display: flex; gap: 16px; flex-wrap: wrap;
-  opacity: 0; animation: fadeUp .8s .8s forwards;
+  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp .8s .85s forwards;
 }
 .btn-primary {
   background: var(--ember); color: var(--hearth);
@@ -591,7 +631,8 @@ footer {
     text-align: center;
   }
   section { padding: 64px 24px; }
-  .hero-content { padding: 100px 24px 60px; }
+  .hero-content { padding: 90px 24px 60px; text-align: center; }
+  .hero-ballot-mark { left: -8px; }
   .signup-form { flex-direction: column; }
   .signup-input { border-right: 1.5px solid rgba(196,154,40,.3); border-bottom: none; }
   .footer-inner { flex-direction: column; gap: 24px; }
@@ -628,16 +669,14 @@ footer {
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Balanced Housing Growth Management Act &nbsp;·&nbsp; California Constitutional Amendment</div>
-    <div class="hero-headline">
-      Capacity First.
-      <em>Then Growth.</em>
+    <div class="hero-headline"><em>Capacity First. Then Growth.</em></div>
+    <div class="hero-ballot">
+      <div class="hero-ballot-mark">&ldquo;</div>
+      <div class="hero-ballot-text">The State of California shall not impose housing mandates on any community without first establishing its physical capacity and funding the infrastructure required to support its growth.</div>
+      <div class="hero-ballot-attr">Ballot Measure Language</div>
     </div>
+    <div class="hero-rule"></div>
     <p class="hero-sub">California's housing crisis isn't a shortage of mandates. It's a failure of sequencing. We have a better way.</p>
-    <div class="hero-sentence">
-      "The State of California may not impose housing growth mandates on any community without first
-      <em>measuring its physical carrying capacity</em> and
-      <em>investing in infrastructure</em> to create that capacity."
-    </div>
     <div class="hero-actions">
       <a href="#signup" class="btn-primary">Stay Informed</a>
       <a href="#how" class="btn-ghost">Learn How It Works</a>
