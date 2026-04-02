@@ -259,35 +259,196 @@ section { padding: 96px 40px; }
   display: block;
 }
 
+/* ── CONVICTION PANELS ── */
+.conviction {
+  position: relative;
+  overflow: hidden;
+}
+.conviction-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 96px 40px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0 64px;
+  align-items: start;
+}
+.conviction-numeral {
+  font-family: 'Playfair Display', serif;
+  font-size: 180px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: .85;
+  color: var(--ember);
+  opacity: .15;
+  user-select: none;
+  pointer-events: none;
+  padding-top: 8px;
+}
+.conviction-body { padding-top: 12px; }
+.conviction-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 20px;
+}
+.conviction-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.8vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.conviction-text {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 300;
+  line-height: 1.75;
+  max-width: 600px;
+  margin-bottom: 32px;
+}
+.conviction-pull {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(16px, 1.8vw, 21px);
+  font-style: italic;
+  line-height: 1.5;
+  padding-left: 20px;
+  border-left: 3px solid var(--ember);
+  max-width: 520px;
+}
+
+/* Dark panels */
+.conviction-dark {
+  background: var(--hearth);
+}
+.conviction-dark .conviction-headline { color: var(--linen); }
+.conviction-dark .conviction-text     { color: rgba(245,239,226,.65); }
+.conviction-dark .conviction-pull     { color: rgba(245,239,226,.8); }
+
+/* Light panels */
+.conviction-light {
+  background: var(--parch);
+  border-top: 1px solid var(--parch-dk);
+  border-bottom: 1px solid var(--parch-dk);
+}
+.conviction-light .conviction-numeral { opacity: .08; color: var(--walnut); }
+.conviction-light .conviction-headline { color: var(--hearth); }
+.conviction-light .conviction-text     { color: var(--walnut-md); }
+.conviction-light .conviction-pull     { color: var(--walnut); border-left-color: var(--ember); }
+
+@media (max-width: 768px) {
+  .conviction-inner {
+    grid-template-columns: 1fr;
+    padding: 64px 24px;
+    gap: 0;
+  }
+  .conviction-numeral {
+    font-size: 96px;
+    opacity: .1;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+}
+
 /* ── HOW IT WORKS ── */
 .how { background: var(--linen); }
-.how-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2px; margin-top: 48px;
+.how-timeline {
+  position: relative;
+  margin-top: 56px;
+  padding-left: 0;
+}
+/* vertical spine */
+.how-timeline::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 12px;
+  bottom: 48px;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    var(--ember) 0%,
+    rgba(196,154,40,.3) 85%,
+    transparent 100%);
 }
 .how-step {
-  background: var(--parch);
-  padding: 28px 24px 24px;
-  border-top: 3px solid var(--ember);
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0 40px;
+  padding-bottom: 48px;
   position: relative;
 }
-.how-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 48px; font-weight: 700; font-style: italic;
-  color: var(--ember); line-height: 1; margin-bottom: 10px;
-  opacity: .9;
+.how-step:last-child { padding-bottom: 0; }
+.how-num-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
+.how-num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ember);
+  background: var(--linen);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; font-style: italic;
+  color: var(--ember);
+  flex-shrink: 0;
+}
+.how-content {
+  padding-top: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(200,176,122,.25);
+}
+.how-step:last-child .how-content { border-bottom: none; }
 .how-name {
   font-family: 'Source Sans 3', sans-serif;
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--hearth);
-  margin-bottom: 8px; padding-bottom: 8px;
-  border-bottom: 1px solid rgba(200,176,122,.35);
+  letter-spacing: .12em; color: var(--hearth);
+  margin-bottom: 10px;
 }
 .how-desc {
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 13px; line-height: 1.6; color: var(--walnut-md);
+  font-size: 15px; line-height: 1.7; color: var(--walnut-md);
+  max-width: 680px;
+}
+
+@media (min-width: 769px) {
+  .how-timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 64px;
+  }
+  .how-timeline::before {
+    display: none;
+  }
+  /* left-column spine */
+  .how-timeline::after {
+    content: '';
+    position: absolute;
+    left: calc(50% - 1px);
+    top: 0; bottom: 0;
+    display: none;
+  }
+  /* each step gets its own mini-spine */
+  .how-step {
+    position: relative;
+  }
+  .how-step::before {
+    content: '';
+    position: absolute;
+    left: 23px;
+    top: 48px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, rgba(196,154,40,.35), transparent);
+  }
+  .how-step:last-child::before,
+  .how-step:nth-last-child(2):nth-child(odd)::before {
+    display: none;
+  }
 }
 
 /* ── VALUE CAPTURE ── */
@@ -295,45 +456,63 @@ section { padding: 96px 40px; }
 .value .section-title { color: #fff; }
 .value .section-lead { color: rgba(255,255,255,.55); font-style: italic; }
 .value .section-eyebrow { color: var(--ember); }
-.value-grid {
+.contrast-wrap {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px; margin-top: 48px;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 48px;
+  border: 1px solid rgba(196,154,40,.15);
 }
-.value-card {
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(196,154,40,.2);
-  border-top: 3px solid rgba(196,154,40,.4);
-  padding: 24px 20px;
+.contrast-col {
+  display: flex;
+  flex-direction: column;
 }
-.value-card.primary {
-  background: rgba(196,154,40,.15);
-  border-color: rgba(196,154,40,.5);
-  border-top-color: var(--ember);
+.contrast-col-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid rgba(196,154,40,.15);
 }
-.value-pct {
+.contrast-col-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+}
+.contrast-col.before { background: rgba(0,0,0,.15); }
+.contrast-col.before .contrast-col-label { color: rgba(255,255,255,.3); }
+.contrast-col.after  { background: rgba(196,154,40,.07); }
+.contrast-col.after  .contrast-col-label { color: var(--ember); }
+.contrast-row {
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(196,154,40,.1);
+  flex: 1;
+}
+.contrast-row:last-child { border-bottom: none; }
+.contrast-row-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.contrast-col.before .contrast-row-label { color: rgba(255,255,255,.25); }
+.contrast-col.after  .contrast-row-label { color: var(--ember); opacity: .7; }
+.contrast-row-text {
   font-family: 'Playfair Display', serif;
-  font-size: 44px; font-weight: 700; font-style: italic;
-  color: var(--ember); line-height: 1; margin-bottom: 6px;
+  font-size: clamp(15px, 1.6vw, 19px);
+  line-height: 1.45;
 }
-.value-card.primary .value-pct { color: #fff; }
-.value-name {
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--ember);
-  margin-bottom: 8px; padding-bottom: 8px;
-  border-bottom: 1px solid rgba(196,154,40,.2);
-}
-.value-desc {
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 12.5px; line-height: 1.6;
-  color: rgba(255,255,255,.5);
-}
+.contrast-col.before .contrast-row-text { color: rgba(255,255,255,.55); }
+.contrast-col.after  .contrast-row-text { color: var(--linen); }
 .value-notax {
-  margin-top: 32px; text-align: center;
-  font-family: 'EB Garamond', serif;
-  font-size: 16px; font-style: italic;
-  color: rgba(255,255,255,.4);
+  margin-top: 36px; text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: .06em;
+  color: rgba(196,154,40,.6);
+  padding: 16px;
+  border: 1px solid rgba(196,154,40,.15);
+}
+@media (max-width: 768px) {
+  .contrast-wrap { grid-template-columns: 1fr; }
+  .contrast-col.before { border-bottom: 2px solid rgba(196,154,40,.2); }
 }
 
 /* ── JOSH SECTION ── */
@@ -657,7 +836,6 @@ footer {
   </button>
   <ul class="nav-links">
     <li><a href="#how">The Framework</a></li>
-    <li><a href="#josh">The Tool</a></li>
     <li><a href="#analysis">Analysis</a></li>
     <li><a href="#signup" class="nav-cta">Stay Informed</a></li>
   </ul>
@@ -684,63 +862,99 @@ footer {
   </div>
 </section>
 
-<!-- ── ONE SENTENCE ── -->
-<div class="one-sentence">
-  <div class="section-inner">
-    <div class="os-bar"></div>
-    <div>
-      <div class="os-text">
-        The growth pays for itself — and funds its own affordability.
-        No new taxes. No reassessment of existing homes.
-        The State creates value through investment, and the community keeps it.
-      </div>
-      <span class="os-attr">Balanced Housing Growth Management Act · Section 8</span>
+<!-- ── CONVICTION PANELS ── -->
+<section class="conviction conviction-dark reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">I</div>
+    <div class="conviction-body">
+      <div class="conviction-label">The First Principle</div>
+      <h2 class="conviction-headline">The State Goes First.</h2>
+      <p class="conviction-text">Before any community is required to build, the State must fund the roads, water, sewer, schools, and emergency services that growth demands. No more unfunded mandates. No more handing cities a quota and a bill.</p>
+      <p class="conviction-pull">Investment before obligation. That's not a reform — it's a requirement.</p>
     </div>
   </div>
-</div>
+</section>
+
+<section class="conviction conviction-light reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">II</div>
+    <div class="conviction-body">
+      <div class="conviction-label">The Physical Fact</div>
+      <h2 class="conviction-headline">Every Place Has a Measurable Limit.</h2>
+      <p class="conviction-text">A canyon with one road out can only evacuate so many people. A water system serves a finite number of homes. These are engineering facts — not opinions, not politics. This measure requires them to be established before a single unit is mandated.</p>
+      <p class="conviction-pull">Science determines capacity. Not Sacramento.</p>
+    </div>
+  </div>
+</section>
+
+<section class="conviction conviction-dark reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">III</div>
+    <div class="conviction-body">
+      <div class="conviction-label">The Promise</div>
+      <h2 class="conviction-headline">There's a Finish Line.</h2>
+      <p class="conviction-text">When a community fills its certified capacity and meets its milestones, it's done. No endless cycle of new mandates. The State's obligation shifts to building capacity elsewhere. Communities know exactly what they're signing up for — and when they're finished.</p>
+      <p class="conviction-pull">Not a moving target. A contract.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ── HOW IT WORKS ── -->
 <section class="how reveal" id="how">
   <div class="section-inner">
-    <div class="section-eyebrow">The Framework</div>
-    <div class="section-title">A closed loop — <em>seven steps.</em></div>
+    <div class="section-eyebrow">The Mechanism</div>
+    <div class="section-title">How those three principles <em>become law.</em></div>
     <div class="section-rule"></div>
-    <p class="section-lead">The Erie Canal. The transcontinental railroad. California's own aqueducts. Growth has always followed investment. We are not inventing something new — we are restoring something that worked.</p>
-    <div class="how-grid">
+    <p class="section-lead">The Erie Canal. The transcontinental railroad. California's own aqueducts. Growth has always followed investment. We are not inventing something new — we are restoring something that worked. Here is the closed loop that makes it enforceable.</p>
+    <div class="how-timeline">
       <div class="how-step reveal">
-        <div class="how-num">1</div>
-        <div class="how-name">Measure</div>
-        <div class="how-desc">Cities assess physical carrying capacity using peer-reviewed engineering standards — not political targets. Buildable land, evacuation routes, water, sewer, schools, energy.</div>
+        <div class="how-num-wrap"><div class="how-num">1</div></div>
+        <div class="how-content">
+          <div class="how-name">Measure</div>
+          <div class="how-desc">Cities assess physical carrying capacity using peer-reviewed engineering standards — not political targets. Buildable land, evacuation routes, water, sewer, schools, energy.</div>
+        </div>
       </div>
       <div class="how-step reveal">
-        <div class="how-num">2</div>
-        <div class="how-name">Invest</div>
-        <div class="how-desc">The State funds infrastructure to create capacity — before imposing any growth mandate. Roads, transit, water, sewer, evacuation routes. Investment comes first.</div>
+        <div class="how-num-wrap"><div class="how-num">2</div></div>
+        <div class="how-content">
+          <div class="how-name">Invest</div>
+          <div class="how-desc">The State funds infrastructure to create capacity — before imposing any growth mandate. Roads, transit, water, sewer, evacuation routes. Investment comes first.</div>
+        </div>
       </div>
       <div class="how-step reveal">
-        <div class="how-num">3</div>
-        <div class="how-name">Grow</div>
-        <div class="how-desc">Growth goes to capacity zones — corridors, transit nodes, areas with infrastructure headroom. Established neighborhoods are protected by engineering, not politics.</div>
+        <div class="how-num-wrap"><div class="how-num">3</div></div>
+        <div class="how-content">
+          <div class="how-name">Grow</div>
+          <div class="how-desc">Growth goes to capacity zones — corridors, transit nodes, areas with infrastructure headroom. Established neighborhoods are protected by engineering, not politics.</div>
+        </div>
       </div>
       <div class="how-step reveal">
-        <div class="how-num">4</div>
-        <div class="how-name">Capture</div>
-        <div class="how-desc">State investment increases land values. New development generates incremental property tax revenue that didn't exist before. That revenue is captured — not given away.</div>
+        <div class="how-num-wrap"><div class="how-num">4</div></div>
+        <div class="how-content">
+          <div class="how-name">Capture</div>
+          <div class="how-desc">State investment increases land values. New development generates incremental property tax revenue that didn't exist before. That revenue is captured — not given away.</div>
+        </div>
       </div>
       <div class="how-step reveal">
-        <div class="how-num">5</div>
-        <div class="how-name">Fund</div>
-        <div class="how-desc">30% of incremental revenue funds affordable housing within the same community. Structural, not aspirational. It scales with every unit built.</div>
+        <div class="how-num-wrap"><div class="how-num">5</div></div>
+        <div class="how-content">
+          <div class="how-name">Fund</div>
+          <div class="how-desc">30% of incremental revenue funds affordable housing within the same community. Structural, not aspirational. It scales with every unit built.</div>
+        </div>
       </div>
       <div class="how-step reveal">
-        <div class="how-num">6</div>
-        <div class="how-name">Mature</div>
-        <div class="how-desc">When a community fills its certified capacity, it's done — no further mandates. The State's obligation shifts to building capacity elsewhere.</div>
+        <div class="how-num-wrap"><div class="how-num">6</div></div>
+        <div class="how-content">
+          <div class="how-name">Mature</div>
+          <div class="how-desc">When a community fills its certified capacity, it's done — no further mandates. The State's obligation shifts to building capacity elsewhere.</div>
+        </div>
       </div>
       <div class="how-step reveal">
-        <div class="how-num">7</div>
-        <div class="how-name">Propagate</div>
-        <div class="how-desc">The model replicates. Growth goes where capacity can be created, not where it must be forced. Densification of built-out communities is not a substitute for investment.</div>
+        <div class="how-num-wrap"><div class="how-num">7</div></div>
+        <div class="how-content">
+          <div class="how-name">Propagate</div>
+          <div class="how-desc">The model replicates. Growth goes where capacity can be created, not where it must be forced. Densification of built-out communities is not a substitute for investment.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -749,55 +963,47 @@ footer {
 <!-- ── VALUE CAPTURE ── -->
 <section class="value reveal">
   <div class="section-inner">
-    <div class="section-eyebrow">Where the Money Goes</div>
-    <div class="section-title">The Value Capture Loop</div>
+    <div class="section-eyebrow">The Difference</div>
+    <div class="section-title">This measure <em style="color:var(--ember)">inverts all three.</em></div>
     <div class="section-rule"></div>
-    <p class="section-lead">Under the current RHNA framework, the State mandates upzoning and developers capture the windfall. Cities absorb the infrastructure cost. Residents bear the risk. This measure inverts all three.</p>
-    <div class="value-grid">
-      <div class="value-card primary reveal">
-        <div class="value-pct">40%</div>
-        <div class="value-name">City Capacity Dividend</div>
-        <div class="value-desc">Unrestricted general fund — no strings, no application. Cities that certify capacity and enable development earn this dividend. It scales with growth.</div>
+    <p class="section-lead">Right now, when Sacramento mandates growth, developers capture the windfall. Cities pay for the infrastructure. Residents absorb the risk.</p>
+    <div class="contrast-wrap reveal">
+      <div class="contrast-col before">
+        <div class="contrast-col-header">
+          <div class="contrast-col-label">How it works today</div>
+        </div>
+        <div class="contrast-row">
+          <div class="contrast-row-label">The Windfall</div>
+          <div class="contrast-row-text">Developers capture the land value created by upzoning. The public paid for the infrastructure. Private owners keep the gain.</div>
+        </div>
+        <div class="contrast-row">
+          <div class="contrast-row-label">The Bill</div>
+          <div class="contrast-row-text">Cities absorb the cost of roads, water, schools, and emergency services — with no guaranteed funding from the State that issued the mandate.</div>
+        </div>
+        <div class="contrast-row">
+          <div class="contrast-row-label">The Risk</div>
+          <div class="contrast-row-text">Residents live with the consequences — overcrowded schools, strained infrastructure, fire evacuations on roads built for half the load.</div>
+        </div>
       </div>
-      <div class="value-card reveal">
-        <div class="value-pct">30%</div>
-        <div class="value-name">Affordable Housing</div>
-        <div class="value-desc">Within the same community. Constitutional floor. Scales with every unit built. The growth funds its own affordability.</div>
-      </div>
-      <div class="value-card reveal">
-        <div class="value-pct">20%</div>
-        <div class="value-name">State Repayment</div>
-        <div class="value-desc">Infrastructure investment returns to the State — funding the next community's capacity. The model is self-sustaining at scale.</div>
-      </div>
-      <div class="value-card reveal">
-        <div class="value-pct">10%</div>
-        <div class="value-name">Administration</div>
-        <div class="value-desc">Program oversight, methodology maintenance, and certification operations statewide.</div>
+      <div class="contrast-col after">
+        <div class="contrast-col-header">
+          <div class="contrast-col-label">Under this measure</div>
+        </div>
+        <div class="contrast-row">
+          <div class="contrast-row-label">The Windfall</div>
+          <div class="contrast-row-text">Value created by State investment flows back to the community — funding city services and affordable housing in the same neighborhoods where growth happens.</div>
+        </div>
+        <div class="contrast-row">
+          <div class="contrast-row-label">The Bill</div>
+          <div class="contrast-row-text">The State funds infrastructure before any mandate is issued. Cities that participate earn an unrestricted dividend. The model pays for itself.</div>
+        </div>
+        <div class="contrast-row">
+          <div class="contrast-row-label">The Risk</div>
+          <div class="contrast-row-text">Growth is bounded by engineering, not politics. Communities know their capacity limit, when they'll reach it, and when their obligation ends.</div>
+        </div>
       </div>
     </div>
-    <p class="value-notax">No new taxes. No reassessment of existing homes. Revenue comes only from value the State's investment created.</p>
-  </div>
-</section>
-
-<!-- ── JOSH ── -->
-<section class="josh-section" id="josh">
-  <div class="josh-bg"></div>
-  <div class="josh-bg-overlay"></div>
-  <div class="josh-content">
-    <div class="section-eyebrow">The Technology</div>
-    <div class="section-title" style="color:#fff; max-width:480px;">JOSH — <em style="color:var(--ember)">Proof of Concept. Real Results.</em></div>
-    <p class="section-lead" style="color:rgba(255,255,255,.6); max-width:480px;">Jurisdictional Objective Standards for Housing. Drop any proposed project into any California community. In seconds, using public federal data, it grades evacuation capacity.</p>
-    <div class="josh-verdict">
-      <div class="josh-verdict-label">Live Result · Encinitas AB 747</div>
-      <div class="josh-verdict-project">Sage Canyon Apartments<br>120 units · New Encinitas</div>
-      <div class="josh-verdict-delta">
-        <div class="josh-delta-num">48.64</div>
-        <div class="josh-delta-label">min added to<br>evacuation clearance</div>
-      </div>
-      <div class="josh-verdict-limit">Limit: 2.25 min &nbsp;·&nbsp; <strong>21.6× over threshold</strong></div>
-      <div class="josh-tag">DISCRETIONARY</div>
-    </div>
-    <a href="https://twgonzalez.github.io/josh/" target="_blank" class="josh-url">twgonzalez.github.io/josh →</a>
+    <p class="value-notax">No new taxes &nbsp;·&nbsp; No reassessment of existing homes &nbsp;·&nbsp; Revenue comes only from value the State's own investment created</p>
   </div>
 </section>
 
@@ -862,7 +1068,6 @@ footer {
     </div>
     <ul class="footer-links">
       <li><a href="#how">Framework</a></li>
-      <li><a href="#josh">JOSH Tool</a></li>
       <li><a href="#analysis">Analysis</a></li>
       <li><a href="#signup">Sign Up</a></li>
       <li><a href="https://californiastewardship.org" target="_blank">californiastewardship.org</a></li>
