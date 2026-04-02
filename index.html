@@ -521,9 +521,56 @@ footer {
 }
 
 /* ── RESPONSIVE ── */
+/* ── HAMBURGER ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px; height: 18px;
+  background: none; border: none; cursor: pointer; padding: 0;
+}
+.nav-hamburger span {
+  display: block;
+  width: 100%; height: 2px;
+  background: var(--linen);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
-  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: rgba(26,36,56,.97);
+    backdrop-filter: blur(8px);
+    padding: 16px 20px 24px;
+    gap: 4px;
+    list-style: none;
+    transform: translateY(-110%);
+    transition: transform .3s ease;
+    z-index: 99;
+    border-bottom: 1px solid rgba(196,154,40,.2);
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block;
+    padding: 12px 8px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(196,154,40,.1);
+  }
+  .nav-links li:last-child a {
+    border-bottom: none;
+    margin-top: 8px;
+    text-align: center;
+  }
   section { padding: 64px 24px; }
   .hero-content { padding: 100px 24px 60px; }
   .signup-form { flex-direction: column; }
@@ -544,6 +591,9 @@ footer {
       <span>balancedhousing.org</span>
     </div>
   </a>
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li><a href="#how">The Framework</a></li>
     <li><a href="#josh">The Tool</a></li>
@@ -778,6 +828,22 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Mobile hamburger menu
+const hamburger = document.querySelector('.nav-hamburger');
+const navLinks = document.querySelector('.nav-links');
+hamburger.addEventListener('click', () => {
+  const open = hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+});
+navLinks.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', false);
+  });
+});
 
 // Smooth nav background on scroll
 window.addEventListener('scroll', () => {
