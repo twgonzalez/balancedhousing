@@ -415,41 +415,7 @@ section { padding: 96px 40px; }
   max-width: 680px;
 }
 
-@media (min-width: 769px) {
-  .how-timeline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 64px;
-  }
-  .how-timeline::before {
-    display: none;
-  }
-  /* left-column spine */
-  .how-timeline::after {
-    content: '';
-    position: absolute;
-    left: calc(50% - 1px);
-    top: 0; bottom: 0;
-    display: none;
-  }
-  /* each step gets its own mini-spine */
-  .how-step {
-    position: relative;
-  }
-  .how-step::before {
-    content: '';
-    position: absolute;
-    left: 23px;
-    top: 48px;
-    bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, rgba(196,154,40,.35), transparent);
-  }
-  .how-step:last-child::before,
-  .how-step:nth-last-child(2):nth-child(odd)::before {
-    display: none;
-  }
-}
+
 
 /* ── VALUE CAPTURE ── */
 .value { background: var(--hearth); }
