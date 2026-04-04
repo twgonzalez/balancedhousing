@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+SC:wght@400;600&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --hearth:    #1a2438;
+  --hearth-md: #243350;
+  --ember:     #c49a28;
+  --ember-lt:  #dbb84a;
+  --linen:     #f5efe2;
+  --parch:     #ede4cf;
+  --rule:      #c8b07a;
+  --walnut:    #3a2e1e;
+}
+html, body { width: 1200px; height: 630px; overflow: hidden; }
+body {
+  background: var(--hearth);
+  font-family: 'Source Sans 3', sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Texture overlay */
+body::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(196,154,40,.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 80% at 10% 90%, rgba(36,51,80,.6) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Gold rule top */
+.rule-top {
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--ember) 20%, var(--ember-lt) 50%, var(--ember) 80%, transparent);
+  flex-shrink: 0;
+}
+
+.inner {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 48px 80px;
+  gap: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left column */
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+.eyebrow {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--linen);
+}
+.headline em {
+  font-style: italic;
+  color: var(--ember-lt);
+}
+
+.tagline {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(245,239,226,.7);
+  line-height: 1.5;
+  max-width: 480px;
+}
+
+/* Divider */
+.divider {
+  width: 60px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--ember), transparent);
+}
+
+/* Right column */
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.badge {
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 2px solid rgba(196,154,40,.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(36,51,80,.5);
+}
+.badge-icon {
+  font-size: 52px;
+  line-height: 1;
+}
+.badge-label {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px;
+  letter-spacing: .16em;
+  color: var(--ember);
+  text-align: center;
+  padding: 0 16px;
+  line-height: 1.4;
+}
+
+.pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 220px;
+}
+.pillar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid rgba(196,154,40,.2);
+  border-radius: 4px;
+  background: rgba(36,51,80,.4);
+}
+.pillar-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ember);
+  flex-shrink: 0;
+}
+.pillar-text {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--linen);
+}
+
+/* Bottom bar */
+.bottom {
+  padding: 0 80px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.wordmark {
+  font-family: 'Cormorant SC', serif;
+  font-size: 14px;
+  letter-spacing: .16em;
+  color: var(--linen);
+  opacity: .6;
+}
+.wordmark span {
+  display: block;
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: var(--ember);
+  opacity: 1;
+}
+.url {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: rgba(245,239,226,.4);
+}
+
+/* Gold rule bottom */
+.rule-bottom {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(196,154,40,.4) 30%, rgba(196,154,40,.4) 70%, transparent);
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+  <div class="rule-top"></div>
+  <div class="inner">
+    <div class="left">
+      <div class="eyebrow">California Constitutional Amendment</div>
+      <h1 class="headline"><em>Capacity Before Growth.</em></h1>
+      <div class="divider"></div>
+      <p class="tagline">A framework that requires infrastructure capacity before new housing is approved — protecting communities while enabling responsible growth.</p>
+    </div>
+    <div class="right">
+      <div class="pillars">
+        <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Water &amp; Sewer</div></div>
+        <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Schools</div></div>
+        <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Roads &amp; Transit</div></div>
+        <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Fire &amp; Safety</div></div>
+        <div class="pillar"><div class="pillar-dot"></div><div class="pillar-text">Parks &amp; Open Space</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="wordmark">Balanced Housing<span>Growth Management Act</span></div>
+    <div class="url">balancedhousing.org</div>
+  </div>
+  <div class="rule-bottom"></div>
+</body>
+</html>
