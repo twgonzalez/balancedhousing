@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSA — Mayors Deck v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --hearth:    #1a2438;
+  --ember:     #c49a28;
+  --ember-lt:  #dbb84a;
+  --linen:     #f5efe2;
+  --parch:     #ede4cf;
+  --parch-dk:  #dfd3b4;
+  --walnut-md: #5a4a32;
+  --walnut-lt: #8a7458;
+  --rule:      #c8b07a;
+  --danger:    #c0392b;
+  --mint:      #d4ede8;
+  --mint-dk:   #a8d5cc;
+  --lavender:  #dcdaef;
+  --lav-dk:    #b8b4d8;
+  --rose:      #f5ddd8;
+  --rose-dk:   #e8bfb8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { width:100%; height:100%; background:#0d0d0d; overflow:hidden; font-family:'Source Sans 3',sans-serif; }
+#deck { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; }
+#scaler { width:960px; height:540px; position:relative; transform-origin:center center; flex-shrink:0; }
+.slide {
+  position:absolute; inset:0; width:960px; height:540px; overflow:hidden;
+  opacity:0; pointer-events:none; transform:translateX(60px);
+  transition:opacity .35s ease, transform .35s ease;
+  box-shadow:0 24px 80px rgba(0,0,0,.7);
+}
+.slide.active { opacity:1; pointer-events:all; transform:translateX(0); }
+.slide.exit-left { opacity:0; transform:translateX(-60px); }
+
+/* ── SHARED CHROME ── */
+.topbar { position:absolute; top:0; left:0; right:0; height:3px; z-index:10;
+  background:linear-gradient(90deg,transparent,var(--ember) 20%,var(--ember-lt) 50%,var(--ember) 80%,transparent); }
+.hdr { position:absolute; top:3px; left:0; right:0; height:46px; background:var(--hearth); z-index:5;
+  display:flex; align-items:center; justify-content:space-between; padding:0 44px; }
+.ey { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em; color:var(--ember); }
+.ftr { position:absolute; bottom:0; left:0; right:0; height:28px; background:var(--parch-dk); z-index:5;
+  display:flex; align-items:center; justify-content:space-between; padding:0 44px;
+  border-top:1.5px solid var(--rule); }
+.ftr-l { font-family:'EB Garamond',serif; font-size:9px; font-style:italic; color:var(--walnut-lt); }
+.ftr-r { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.12em; color:var(--ember); }
+.hdr-dark { position:absolute; top:3px; left:0; right:0; height:46px;
+  background:rgba(10,14,22,.82); border-bottom:1px solid rgba(196,154,40,.18);
+  backdrop-filter:blur(8px); z-index:10;
+  display:flex; align-items:center; justify-content:space-between; padding:0 44px; }
+.ftr-dark { position:absolute; bottom:0; left:0; right:0; height:28px;
+  background:rgba(10,14,22,.85); border-top:1px solid rgba(196,154,40,.22);
+  backdrop-filter:blur(8px); z-index:10;
+  display:flex; align-items:center; justify-content:space-between; padding:0 44px; }
+.ftr-dark .ftr-l { color:rgba(255,255,255,.45); }
+.ftr-dark .ftr-r { color:var(--ember); }
+
+/* principle bar — reusable bottom statement bar */
+.pbar { position:absolute; bottom:28px; left:0; right:0; height:44px;
+  background:var(--hearth); display:flex; align-items:center; justify-content:center; gap:16px; z-index:2; }
+.pbar-rule { width:2px; height:22px; background:var(--ember); opacity:.6; flex-shrink:0; }
+.pbar-text { font-family:'Playfair Display',serif; font-size:13px; font-weight:700; font-style:italic;
+  color:#fff; text-align:center; }
+.pbar-text em { color:var(--ember-lt); }
+
+/* ── NAV ── */
+#nav { position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+  z-index:9999; display:flex; align-items:center; gap:8px;
+  background:rgba(20,28,44,.88); border:1px solid rgba(196,154,40,.2);
+  border-radius:6px; padding:5px 10px; backdrop-filter:blur(10px); }
+.nav-btn { background:none; border:none; color:rgba(255,255,255,.55);
+  font-size:20px; line-height:1; cursor:pointer; padding:2px 6px; border-radius:3px; transition:.15s; }
+.nav-btn:hover { color:#fff; background:rgba(255,255,255,.08); }
+#counter { font-family:'Cormorant SC',serif; font-size:9px; letter-spacing:.15em; color:var(--ember); padding:0 4px; }
+#fs-btn { background:none; border:none; color:rgba(255,255,255,.35); font-size:14px;
+  cursor:pointer; padding:2px 4px; border-radius:3px; transition:.15s; }
+#fs-btn:hover { background:rgba(255,255,255,.08); }
+
+/* ══════════════════════════════════════
+   S1 — TITLE
+══════════════════════════════════════ */
+.s1 { background:var(--linen); }
+.s1::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 65% at 0% 100%, rgba(196,154,40,.09) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 65% at 100% 0%, rgba(196,154,40,.07) 0%, transparent 60%); }
+.s1-center { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.s1-kicker { font-family:'Cormorant SC',serif; font-size:10px; letter-spacing:.4em;
+  color:var(--ember); margin-bottom:24px; }
+.s1-h1 { font-family:'Playfair Display',serif; font-size:50px; font-weight:700;
+  color:var(--hearth); text-align:center; line-height:1.1; margin-bottom:6px; }
+.s1-h1 em { color:var(--ember); font-style:italic; }
+.s1-rule { width:40px; height:1.5px; background:var(--ember); opacity:.65; margin:22px auto; }
+.s1-h2 { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:300; font-style:italic;
+  color:var(--walnut-lt); text-align:center; line-height:1.5; margin-bottom:30px; }
+.s1-url { font-family:'Cormorant SC',serif; font-size:9px; letter-spacing:.22em; color:var(--walnut-lt); }
+
+/* ══════════════════════════════════════
+   S2 — PARADIGM SHIFT (Earthrise)
+══════════════════════════════════════ */
+.s2 { background:#1a1208; }
+.s2-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  object-position:center center; display:block; z-index:1; }
+.s2-scrim { position:absolute; inset:0; z-index:2;
+  background:linear-gradient(to right, rgba(12,8,4,.92) 0%, rgba(12,8,4,.82) 30%, rgba(12,8,4,.45) 58%, transparent 100%); }
+.s2-content { position:absolute; top:49px; left:0; bottom:28px; z-index:5;
+  display:flex; flex-direction:column; justify-content:flex-start;
+  padding:52px 52px 0; max-width:520px; }
+.s2-pre { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.38em;
+  color:var(--ember); margin-bottom:20px; }
+.s2-h1 { font-family:'Playfair Display',serif; font-size:38px; font-weight:700;
+  color:#fdf8f0; line-height:1.15; margin-bottom:18px; }
+.s2-h1 em { color:var(--ember-lt); font-style:italic; }
+.s2-rule { width:40px; height:1.5px; background:var(--ember); opacity:.8; margin-bottom:18px; }
+.s2-body { font-family:'EB Garamond',serif; font-size:15px; font-style:italic;
+  color:rgba(253,248,240,.82); line-height:1.8; }
+/* cap — right-anchored, bottom of slide, same Playfair treatment as headline */
+.s2-cap { position:absolute; bottom:48px; right:44px; z-index:5;
+  text-align:right; max-width:380px; }
+.s2-cap-text { font-family:'Playfair Display',serif; font-size:16px; font-weight:700;
+  color:#fdf8f0; line-height:1.55; border-right:3px solid var(--ember); padding-right:14px; }
+.s2-cap-text em { color:var(--ember-lt); font-style:italic; }
+
+/* ══════════════════════════════════════
+   S-ST — STREET CAPACITY
+══════════════════════════════════════ */
+.sst { background:#080503; }
+.sst-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  object-position:center 35%; display:block; z-index:1; }
+.sst-scrim { position:absolute; inset:0; z-index:2;
+  background:linear-gradient(to top, rgba(8,5,3,.94) 0%, rgba(8,5,3,.70) 28%, rgba(8,5,3,.22) 55%, transparent 75%); }
+.sst-sentence { position:absolute; bottom:72px; left:0; right:0; z-index:5;
+  text-align:center; padding:0 100px; }
+.sst-sentence-text { font-family:'Playfair Display',serif; font-size:33px; font-weight:700;
+  font-style:italic; color:#fdf8f0; line-height:1.4; }
+
+/* ══════════════════════════════════════
+   S-PR — JOSH PROOF / "NOW WE CAN PROVE IT"
+══════════════════════════════════════ */
+.spr { background:var(--hearth); }
+.spr-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:calc(40% + 15px) calc(60% - 15px); }
+.spr-left { display:flex; flex-direction:column; justify-content:center; align-items:center;
+  padding:32px 44px; text-align:center; }
+.spr-eyebrow { font-family:'Cormorant SC',serif; font-size:9px; letter-spacing:.38em;
+  color:var(--ember); margin-bottom:20px; }
+.spr-sentence { font-family:'Playfair Display',serif; font-size:32px; font-weight:700;
+  font-style:italic; color:#fdf8f0; line-height:1.2; margin-bottom:20px; }
+.spr-rule { width:34px; height:1.5px; background:var(--ember); opacity:.8; margin-bottom:14px; }
+.spr-sub { font-family:'Source Sans 3',sans-serif; font-size:11px; font-weight:400;
+  color:rgba(253,248,240,.5); letter-spacing:.04em; line-height:1.6; }
+.spr-right { position:relative; overflow:hidden; background:#e8edf2; }
+.spr-img { position:absolute; inset:0; width:100%; height:100%;
+  object-fit:contain; object-position:center top; display:block; }
+
+/* ══════════════════════════════════════
+   S-INV — THE INVERSION
+══════════════════════════════════════ */
+.sinv { background:var(--linen); }
+.sinv-subhdr { position:absolute; top:49px; left:0; right:0; height:44px;
+  background:var(--hearth); display:flex; align-items:center; justify-content:center;
+  border-bottom:2px solid var(--ember); z-index:2; padding:0 44px; }
+.sinv-subhdr-text { font-family:'Playfair Display',serif; font-size:14px; font-weight:700;
+  font-style:italic; color:#fff; text-align:center; }
+.sinv-subhdr-text em { color:var(--ember-lt); }
+.sinv-cols { position:absolute; top:93px; left:0; right:0; bottom:72px;
+  display:grid; grid-template-columns:1fr 1px 1fr; }
+.sinv-divider { background:var(--parch-dk); }
+
+/* Left col — cold, bureaucratic, caged */
+.sinv-col { display:flex; flex-direction:column; justify-content:center;
+  padding:28px 44px; position:relative; overflow:hidden; }
+.sinv-col.left { background:var(--linen); }
+/* prison bar overlay — faint red verticals */
+.sinv-col.left::before {
+  content:'';
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(192,57,43,.07) 0px, rgba(192,57,43,.07) 3px,
+    transparent 3px, transparent 38px
+  );
+}
+.sinv-col.left::after {
+  content:'MANDATE';
+  position:absolute; bottom:18px; right:24px;
+  font-family:'Source Sans 3',sans-serif; font-size:64px; font-weight:700;
+  letter-spacing:-.02em; color:rgba(192,57,43,.06);
+  pointer-events:none; z-index:0; line-height:1;
+}
+
+/* Right col — warm, open, radiant */
+.sinv-col.right {
+  background:var(--linen);
+}
+.sinv-col.right::before {
+  content:'';
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background: radial-gradient(ellipse 80% 80% at 55% 50%, rgba(196,154,40,.13) 0%, transparent 70%);
+}
+.sinv-col.right::after {
+  content:'COMPACT';
+  position:absolute; bottom:18px; right:24px;
+  font-family:'Playfair Display',serif; font-size:64px; font-weight:700; font-style:italic;
+  letter-spacing:-.02em; color:rgba(196,154,40,.1);
+  pointer-events:none; z-index:0; line-height:1;
+}
+
+.sinv-col-label { font-family:'Playfair Display',serif; font-size:22px; font-weight:700;
+  color:rgba(192,57,43,.7); margin-bottom:18px; position:relative; z-index:1; line-height:1.15; }
+.sinv-col-label span { font-family:'Cormorant SC',serif; font-size:8px; font-weight:400;
+  letter-spacing:.32em; display:block; margin-bottom:5px; color:rgba(192,57,43,.45); }
+.sinv-col.right .sinv-col-label { color:var(--hearth); }
+.sinv-col.right .sinv-col-label span { color:var(--ember); }
+
+.sinv-body { font-family:'EB Garamond',serif; font-size:15px; font-style:italic;
+  color:var(--walnut-md); line-height:1.85; position:relative; z-index:1; }
+
+/* ══════════════════════════════════════
+   S3 — THE FAILURE
+══════════════════════════════════════ */
+.s3 { background:var(--linen); }
+/* FAILED stamp — CSS only, centered, rotated */
+.s3::before {
+  content:'FAILED';
+  position:absolute; top:50%; left:50%; z-index:1; pointer-events:none;
+  transform:translate(-50%,-50%) rotate(-12deg);
+  font-family:'Source Sans 3',sans-serif; font-size:148px; font-weight:700;
+  letter-spacing:-.02em; color:rgba(192,57,43,.07);
+  white-space:nowrap; line-height:1;
+}
+.s3::after {
+  content:'';
+  position:absolute; top:50%; left:50%; z-index:1; pointer-events:none;
+  transform:translate(-50%,-50%) rotate(-12deg);
+  width:580px; height:148px;
+  border:6px solid rgba(192,57,43,.06);
+  border-radius:4px;
+}
+.s3-layout { position:absolute; top:49px; left:0; right:0; bottom:72px;
+  display:grid; grid-template-columns:1fr 1fr; z-index:2; }
+.s3-left { display:flex; flex-direction:column; justify-content:center;
+  padding:28px 36px 28px 44px; border-right:1px solid var(--parch-dk); }
+.s3-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--danger); margin-bottom:16px; }
+.s3-verdict { font-family:'Playfair Display',serif; font-size:21px; font-weight:700;
+  color:var(--hearth); line-height:1.35; }
+.s3-verdict em { color:var(--danger); font-style:italic; }
+.s3-right { display:flex; flex-direction:column; justify-content:center;
+  padding:28px 44px 28px 36px; gap:16px; }
+.s3-stat { display:flex; flex-direction:column; gap:3px; }
+.s3-stat-num { font-family:'Playfair Display',serif; font-size:56px; font-weight:700; font-style:italic;
+  color:var(--danger); line-height:1; }
+.s3-stat-finding { font-family:'Source Sans 3',sans-serif; font-size:8.5px; font-weight:600;
+  color:var(--hearth); letter-spacing:.03em; }
+.s3-stat-src { font-family:'Source Sans 3',sans-serif; font-size:7.5px;
+  color:var(--walnut-lt); margin-top:1px; }
+.s3-divider { width:100%; height:1px; background:var(--parch-dk); }
+
+/* ══════════════════════════════════════
+   S4 — FIRST PRINCIPLES OVERVIEW
+══════════════════════════════════════ */
+.s4 { background:var(--linen); }
+.s4-subhdr { position:absolute; top:49px; left:0; right:0; height:44px;
+  background:var(--hearth); display:flex; align-items:center; justify-content:space-between;
+  padding:0 44px; border-bottom:2px solid var(--ember); z-index:2; }
+.s4-subhdr-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em; color:var(--ember); }
+.s4-subhdr-title { font-family:'Playfair Display',serif; font-size:14px; font-weight:700;
+  font-style:italic; color:#fff; }
+.s4-cols { position:absolute; top:93px; left:0; right:0; bottom:72px;
+  display:grid; grid-template-columns:1fr 1fr 1fr; }
+.s4-col { display:flex; flex-direction:column; justify-content:flex-start; align-items:flex-start;
+  padding:76px 36px 28px; border-right:1px solid var(--parch-dk); }
+.s4-col:last-child { border-right:none; }
+.s4-col:nth-child(even) { background:rgba(237,228,207,.45); }
+.s4-roman { font-family:'Cormorant SC',serif; font-size:17px; font-weight:600; letter-spacing:.2em;
+  color:var(--ember); line-height:1; margin-bottom:10px; opacity:.4; text-transform:uppercase; }
+.s4-col-title { font-family:'Playfair Display',serif; font-size:22px; font-weight:700;
+  color:var(--hearth); line-height:1.15; margin-bottom:10px; }
+.s4-col-rule { width:28px; height:1.5px; background:var(--ember); opacity:.6; margin-bottom:12px; }
+.s4-col-def { font-family:'EB Garamond',serif; font-size:13.5px; font-style:italic;
+  color:var(--walnut-md); line-height:1.72; }
+
+/* ══════════════════════════════════════
+   S5 — BHF PRINCIPLE I
+══════════════════════════════════════ */
+.s5 { background:var(--linen); }
+.s5-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:1fr 1fr; }
+.s5-left { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 32px 24px 44px; border-right:1px solid var(--parch-dk); }
+.s5-right { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 44px 24px 32px; }
+.s5-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:14px; }
+.s5-big { font-family:'Playfair Display',serif; font-size:22px; font-weight:700;
+  color:var(--hearth); line-height:1.25; margin-bottom:14px; }
+.s5-big em { color:var(--ember); font-style:italic; }
+.s5-rule { width:28px; height:1.5px; background:var(--ember); opacity:.6; margin-bottom:14px; }
+.s5-body { font-family:'EB Garamond',serif; font-size:13px; font-style:italic;
+  color:var(--walnut-md); line-height:1.72; margin-bottom:12px; }
+.s5-tri { display:flex; flex-direction:column; gap:14px; margin-top:4px; }
+.s5-tri-item { display:flex; flex-direction:column; gap:3px; }
+.s5-tri-title { font-family:'Playfair Display',serif; font-size:19px; font-weight:700;
+  color:var(--ember); line-height:1.1; }
+.s5-tri-sub { font-family:'Source Sans 3',sans-serif; font-size:11.5px; font-weight:400;
+  color:var(--walnut-md); letter-spacing:.01em; }
+.s5-right-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:16px; }
+.s5-bars { display:flex; flex-direction:column; }
+.s5-bar-row { display:grid; grid-template-columns:140px 1fr 26px; align-items:center;
+  gap:12px; padding:13px 16px; border-bottom:1px solid var(--parch-dk); }
+.s5-bar-row:last-child { border-bottom:none; }
+.s5-bar-row:nth-child(odd) { background:var(--parch); }
+.s5-bar-name { font-family:'Source Sans 3',sans-serif; font-size:9px; font-weight:600;
+  color:var(--hearth); letter-spacing:.04em; }
+.s5-bar-sub { font-family:'Source Sans 3',sans-serif; font-size:7.5px;
+  color:var(--walnut-lt); margin-top:2px; }
+.s5-bar-track { height:7px; background:var(--parch-dk); border-radius:4px; overflow:hidden; }
+.s5-bar-fill { height:100%; border-radius:4px; }
+.s5-bar-fill.yes { background:var(--ember); width:100%; }
+.s5-bar-fill.no  { background:var(--danger); width:10%; }
+.s5-bar-icon { font-size:14px; text-align:center; line-height:1; }
+.s5-note { background:var(--parch); border-left:3px solid var(--ember);
+  padding:10px 13px; margin-top:16px; }
+.s5-note-text { font-family:'Source Sans 3',sans-serif; font-size:8px; line-height:1.62;
+  color:var(--walnut-md); }
+.s5-note-text strong { color:var(--hearth); font-weight:700; }
+
+/* ══════════════════════════════════════
+   S6 — BHF PRINCIPLE II — EQUITY GATE
+══════════════════════════════════════ */
+.s6 { background:var(--linen); }
+.s6-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:1fr 310px; }
+.s6-left { display:flex; flex-direction:column; justify-content:center;
+  padding:20px 28px 20px 44px; }
+.s6-right { border-left:1px solid var(--parch-dk);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:12px 14px; overflow:hidden; }
+.s6-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:14px; }
+.s6-kp { margin-bottom:11px; }
+.s6-kp-title { font-family:'Source Sans 3',sans-serif; font-size:9px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--hearth); margin-bottom:3px; }
+.s6-kp-body { font-family:'EB Garamond',serif; font-size:13px; font-style:italic;
+  color:var(--walnut-md); line-height:1.65; }
+.s6-kp-body strong { color:var(--hearth); font-style:normal; font-weight:700; }
+.s6-callout { background:var(--hearth); border-left:3px solid var(--ember);
+  padding:11px 14px; margin-top:6px; }
+.s6-callout-text { font-family:'Playfair Display',serif; font-size:14px; font-weight:700;
+  font-style:italic; color:#fff; line-height:1.4; }
+.s6-callout-text em { color:var(--ember-lt); }
+.s6-callout-sub { font-family:'Source Sans 3',sans-serif; font-size:8px;
+  color:rgba(255,255,255,.42); margin-top:4px; }
+
+/* flowchart nodes */
+.fc { display:flex; flex-direction:column; align-items:center; gap:3px; width:100%; }
+.fc-node { border-radius:7px; padding:6px 10px; text-align:center; width:100%; }
+.fc-title { font-family:'Playfair Display',serif; font-size:10.5px; font-weight:700;
+  color:var(--hearth); line-height:1.2; }
+.fc-sub { font-family:'Source Sans 3',sans-serif; font-size:7px;
+  color:var(--walnut-md); margin-top:2px; line-height:1.45; }
+.fc-top    { background:var(--parch); border:1.5px solid var(--parch-dk); }
+.fc-gate   { background:#fff; border:2px dashed #c0392b; }
+.fc-gate .fc-title { color:#c0392b; }
+.fc-static { background:var(--mint); border:1.5px solid var(--mint-dk); }
+.fc-out    { background:var(--rose); border:1.5px solid var(--rose-dk); }
+.fc-in     { background:var(--lavender); border:1.5px solid var(--lav-dk); }
+.fc-arr { font-size:11px; color:var(--walnut-lt); line-height:1; }
+.fc-split { display:flex; width:100%; justify-content:space-around; padding:0 22px; }
+.fc-split span { font-size:11px; color:var(--walnut-lt); line-height:1; }
+.fc-branches { display:flex; gap:7px; width:100%; }
+.fc-branch { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
+.fc-same { font-size:8.5px; font-family:'EB Garamond',serif; font-style:italic;
+  color:var(--walnut-md); text-align:center; margin-top:3px; }
+.fc-footer { font-family:'Cormorant SC',serif; font-size:7.5px; letter-spacing:.15em;
+  color:var(--hearth); text-align:center; margin-top:5px; }
+
+/* ══════════════════════════════════════
+   S7 — BHF PRINCIPLE III
+══════════════════════════════════════ */
+.s7 { background:var(--hearth); }
+.s7-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:1fr 1fr; }
+.s7-left { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 32px 24px 44px; border-right:1px solid rgba(196,154,40,.12); gap:14px; }
+.s7-right { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 44px 24px 36px; gap:14px; }
+.s7-col-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); }
+.s7-stmt { background:rgba(196,154,40,.07); border-left:2.5px solid var(--ember);
+  padding:10px 13px; }
+.s7-stmt-text { font-family:'Source Sans 3',sans-serif; font-size:9px; line-height:1.62;
+  color:rgba(255,255,255,.52); }
+.s7-stmt-text strong { color:rgba(255,255,255,.88); }
+.s7-big { font-family:'Playfair Display',serif; font-size:23px; font-weight:700;
+  color:#fff; line-height:1.3; }
+.s7-big em { color:var(--ember-lt); font-style:italic; }
+.s7-rule { width:28px; height:1.5px; background:var(--ember); opacity:.5; }
+.s7-body { font-family:'EB Garamond',serif; font-size:13px; font-style:italic;
+  color:rgba(255,255,255,.52); line-height:1.75; }
+
+/* ══════════════════════════════════════
+   S8 — JOSH PRINCIPLE I  (ΔT)
+══════════════════════════════════════ */
+.s8 { background:var(--hearth); }
+.s8::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%, rgba(196,154,40,.06) 0%, transparent 70%); }
+.s8-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:1fr 1fr; }
+.s8-left { display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px 28px 24px 44px; border-right:1px solid rgba(196,154,40,.12); }
+.s8-sym-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.3em;
+  color:rgba(255,255,255,.3); margin-bottom:8px; }
+.s8-symbol { font-family:'Playfair Display',serif; font-size:118px; font-weight:700; font-style:italic;
+  color:var(--ember); line-height:1; margin-bottom:6px; }
+.s8-sym-name { font-family:'Cormorant SC',serif; font-size:11px; letter-spacing:.22em;
+  color:rgba(255,255,255,.35); margin-bottom:20px; }
+.s8-threshold { font-family:'Source Sans 3',sans-serif; font-size:9px; letter-spacing:.05em;
+  color:rgba(255,255,255,.35); text-align:center; line-height:1.72; }
+.s8-threshold strong { color:var(--ember); font-weight:600; }
+.s8-right { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 44px 24px 36px; gap:16px; }
+.s8-def { font-family:'Playfair Display',serif; font-size:20px; font-weight:700;
+  color:#fff; line-height:1.32; }
+.s8-def em { color:var(--ember); font-style:italic; }
+.s8-rule { width:32px; height:1.5px; background:var(--ember); opacity:.5; }
+.s8-explain { font-family:'EB Garamond',serif; font-size:13px; font-style:italic;
+  color:rgba(255,255,255,.52); line-height:1.75; }
+.s8-std { background:rgba(196,154,40,.1); border:1px solid rgba(196,154,40,.2);
+  border-left:3px solid var(--ember); padding:10px 13px; }
+.s8-std-label { font-family:'Cormorant SC',serif; font-size:7px; letter-spacing:.22em;
+  color:var(--ember); margin-bottom:4px; }
+.s8-std-text { font-family:'Source Sans 3',sans-serif; font-size:8.5px; line-height:1.6;
+  color:rgba(255,255,255,.45); }
+.s8-std-text strong { color:rgba(255,255,255,.78); }
+
+/* ══════════════════════════════════════
+   S9 — JOSH PRINCIPLE II
+══════════════════════════════════════ */
+.s9 { background:var(--linen); }
+.s9-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:1fr 1fr; }
+.s9-left { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 32px 24px 44px; border-right:1px solid var(--parch-dk); }
+.s9-right { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 44px 24px 32px; gap:10px; }
+.s9-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:12px; }
+.s9-stmt { font-family:'Playfair Display',serif; font-size:16px; font-weight:700;
+  color:var(--hearth); line-height:1.3; margin-bottom:12px; }
+.s9-rule { width:28px; height:1.5px; background:var(--ember); opacity:.6; margin-bottom:12px; }
+.s9-body { font-family:'EB Garamond',serif; font-size:13px; font-style:italic;
+  color:var(--walnut-md); line-height:1.72; margin-bottom:12px; }
+.s9-hl { background:var(--hearth); border-left:3px solid var(--ember); padding:10px 13px; }
+.s9-hl-label { font-family:'Cormorant SC',serif; font-size:7px; letter-spacing:.2em;
+  color:var(--ember); margin-bottom:4px; }
+.s9-hl-text { font-family:'Source Sans 3',sans-serif; font-size:9px; line-height:1.58;
+  color:rgba(255,255,255,.65); }
+.s9-hl-text strong { color:#fff; }
+.s9-open { font-family:'Source Sans 3',sans-serif; font-size:8px; line-height:1.58;
+  color:var(--walnut-lt); margin-top:7px; }
+.s9-fly-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); }
+.s9-fly { display:flex; flex-direction:column; gap:0; }
+.s9-fly-node { background:var(--parch); border-left:3px solid var(--ember); padding:9px 12px; }
+.s9-fly-title { font-family:'Source Sans 3',sans-serif; font-size:9px; font-weight:700;
+  color:var(--hearth); }
+.s9-fly-desc { font-family:'Source Sans 3',sans-serif; font-size:8px;
+  color:var(--walnut-md); line-height:1.52; margin-top:2px; }
+.s9-fly-arr { text-align:center; font-size:12px; color:var(--ember); padding:3px 0; line-height:1; }
+.s9-tagline { font-family:'EB Garamond',serif; font-size:11.5px; font-style:italic;
+  color:var(--walnut-lt); border-top:1px solid var(--parch-dk); padding-top:8px; margin-top:4px; }
+
+/* ══════════════════════════════════════
+   S10 — JOSH PRINCIPLE III (Pipeline)
+══════════════════════════════════════ */
+.s10 { background:var(--hearth); }
+.s10-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:20px 44px; gap:12px; }
+.s10-sources { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; width:100%; }
+.s10-src { background:rgba(196,154,40,.08); border:1px solid rgba(196,154,40,.24);
+  border-top:2.5px solid var(--ember); padding:12px 14px; }
+.s10-src-name { font-family:'Cormorant SC',serif; font-size:9px; letter-spacing:.18em;
+  color:var(--ember); margin-bottom:5px; }
+.s10-src-desc { font-family:'Source Sans 3',sans-serif; font-size:8px; line-height:1.58;
+  color:rgba(255,255,255,.42); }
+.s10-arrows { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; width:100%; }
+.s10-arr { text-align:center; font-size:18px; color:var(--ember); opacity:.55; line-height:1; }
+.s10-output { background:var(--ember); padding:14px 22px; text-align:center; width:100%; }
+.s10-out-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:rgba(26,36,56,.65); margin-bottom:4px; }
+.s10-out-name { font-family:'Playfair Display',serif; font-size:19px; font-weight:700;
+  color:var(--hearth); line-height:1.2; }
+.s10-out-desc { font-family:'Source Sans 3',sans-serif; font-size:8.5px;
+  color:rgba(26,36,56,.65); margin-top:3px; }
+.s10-below { display:flex; flex-direction:column; gap:5px; width:100%; }
+.s10-line { font-family:'Source Sans 3',sans-serif; font-size:8.5px; line-height:1.58;
+  color:rgba(255,255,255,.4); text-align:center; }
+.s10-line strong { color:rgba(255,255,255,.72); }
+.s10-line em { color:var(--ember); font-style:italic; }
+
+/* ══════════════════════════════════════
+   S11 — THE SYSTEM
+══════════════════════════════════════ */
+.s11 { background:var(--linen); }
+.s11-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:16px 44px; gap:11px; }
+.s11-top { display:grid; grid-template-columns:1fr 90px 1fr; gap:0; width:100%; }
+.s11-panel { background:var(--hearth); border-top:3px solid var(--ember); padding:14px 16px; }
+.s11-panel-label { font-family:'Cormorant SC',serif; font-size:7.5px; letter-spacing:.25em;
+  color:var(--ember); margin-bottom:5px; }
+.s11-panel-title { font-family:'Playfair Display',serif; font-size:14px; font-weight:700;
+  color:#fff; margin-bottom:7px; }
+.s11-panel-desc { font-family:'Source Sans 3',sans-serif; font-size:8px; line-height:1.62;
+  color:rgba(255,255,255,.42); }
+.s11-panel-desc strong { color:rgba(255,255,255,.75); }
+.s11-connector { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; }
+.s11-conn-line { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.08em;
+  color:var(--ember); text-align:center; line-height:1.55; }
+.s11-bottom { width:100%; background:var(--parch); border:1.5px solid var(--parch-dk);
+  border-top:3px solid var(--ember); padding:13px 20px; }
+.s11-bot-title { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.25em;
+  color:var(--ember); margin-bottom:8px; text-align:center; }
+.s11-bot-cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.s11-bot-col-label { font-family:'Source Sans 3',sans-serif; font-size:8px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--hearth); margin-bottom:4px; }
+.s11-bot-col-text { font-family:'Source Sans 3',sans-serif; font-size:8px; line-height:1.62;
+  color:var(--walnut-md); }
+.s11-tagline { font-family:'Playfair Display',serif; font-size:13px; font-weight:700;
+  font-style:italic; color:var(--hearth); text-align:center; }
+.s11-tagline em { color:var(--ember); }
+
+/* ══════════════════════════════════════
+   S12 — COALITION + ASK
+══════════════════════════════════════ */
+.s12 { background:var(--linen); }
+.s12::before { content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 65% at 0% 100%, rgba(196,154,40,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 65% at 100% 0%, rgba(196,154,40,.05) 0%, transparent 60%); }
+.s12-layout { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:1fr 1fr; }
+.s12-left { display:flex; flex-direction:column; justify-content:center;
+  padding:24px 32px 24px 44px; border-right:1px solid var(--parch-dk); }
+.s12-right { display:flex; flex-direction:column; justify-content:center;
+  padding:20px 40px 20px 28px; gap:6px; }
+.s12-label { font-family:'Cormorant SC',serif; font-size:8px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:18px; }
+.s12-big { font-family:'Playfair Display',serif; font-size:34px; font-weight:700;
+  color:var(--hearth); line-height:1.15; margin-bottom:16px; }
+.s12-big em { color:var(--ember); font-style:italic; }
+.s12-body { font-family:'EB Garamond',serif; font-size:13.5px; font-style:italic;
+  color:var(--walnut-md); line-height:1.75; margin-bottom:10px; }
+.s12-sub { font-family:'Source Sans 3',sans-serif; font-size:8.5px;
+  color:var(--walnut-lt); line-height:1.6; }
+.s12-step { display:grid; grid-template-columns:22px 1fr; gap:0 10px; align-items:start;
+  background:var(--parch); border-left:3px solid var(--ember); padding:9px 11px; }
+.s12-step-num { font-family:'Playfair Display',serif; font-size:18px; font-weight:700;
+  font-style:italic; color:var(--ember); line-height:1.1; }
+.s12-step-title { font-family:'Source Sans 3',sans-serif; font-size:8.5px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; color:var(--hearth); margin-bottom:2px; }
+.s12-step-desc { font-family:'Source Sans 3',sans-serif; font-size:8px; line-height:1.52;
+  color:var(--walnut-md); }
+.s12-cities-label { font-family:'Cormorant SC',serif; font-size:7px; letter-spacing:.2em;
+  color:var(--walnut-lt); margin:6px 0 5px; }
+.s12-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; margin-bottom:7px; }
+.s12-city { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.s12-dot { width:22px; height:22px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; }
+.s12-dot.joined { background:var(--hearth); color:var(--ember); font-size:11px; }
+.s12-dot.open { background:var(--parch); border:1.5px dashed var(--parch-dk);
+  color:var(--walnut-lt); font-size:13px; }
+.s12-city-name { font-family:'Source Sans 3',sans-serif; font-size:6px;
+  color:var(--walnut-lt); text-align:center; }
+.s12-contact { background:var(--hearth); border-top:2.5px solid var(--ember);
+  padding:9px 13px; }
+.s12-contact-url { font-family:'Playfair Display',serif; font-size:15px; font-weight:700;
+  color:#fff; }
+.s12-contact-sub { font-family:'Source Sans 3',sans-serif; font-size:7.5px;
+  color:rgba(255,255,255,.35); margin-top:3px; }
+
+/* ══════════════════════════════════════
+   S-HERO — BHF HERO (website style)
+══════════════════════════════════════ */
+.s-hero { background:var(--hearth); }
+.s-hero-bg { position:absolute; inset:0; background-image:url('constitution.png');
+  background-size:cover; background-position:center center; z-index:1; }
+.s-hero-overlay { position:absolute; inset:0; z-index:2;
+  background:linear-gradient(110deg, rgba(14,10,4,.91) 0%, rgba(14,10,4,.82) 40%, rgba(14,10,4,.45) 65%, rgba(14,10,4,.08) 100%); }
+.s-hero-content { position:absolute; top:49px; left:0; right:0; bottom:28px; z-index:5;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px 80px; text-align:center; }
+.s-hero-eyebrow { font-family:'Cormorant SC',serif; font-size:10px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:20px; }
+.s-hero-hl-wrap { display:flex; align-items:center; gap:16px; width:100%; max-width:580px; margin-bottom:20px; }
+.s-hero-hl-wrap::before { content:''; flex:1; height:1px; background:linear-gradient(90deg, transparent, rgba(196,154,40,.3)); }
+.s-hero-hl-wrap::after  { content:''; flex:1; height:1px; background:linear-gradient(270deg, transparent, rgba(196,154,40,.3)); }
+.s-hero-headline { font-family:'Source Sans 3',sans-serif; font-size:10px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:rgba(245,239,226,.4); white-space:nowrap; }
+.s-hero-ballot { position:relative; max-width:660px; }
+.s-hero-mark { font-family:'Playfair Display',serif; font-size:90px; line-height:.65;
+  color:var(--ember); opacity:.18; position:absolute; top:-6px; left:-12px;
+  pointer-events:none; user-select:none; }
+.s-hero-text { font-family:'Playfair Display',serif; font-size:24px; font-weight:400;
+  line-height:1.4; color:var(--linen); letter-spacing:-.01em; position:relative; z-index:1; }
+.s-hero-attr { font-family:'Source Sans 3',sans-serif; font-size:10px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--ember); opacity:.65;
+  margin-top:14px; display:flex; align-items:center; justify-content:center; gap:10px; }
+.s-hero-attr::before, .s-hero-attr::after { content:''; display:block; width:22px; height:1px; background:rgba(196,154,40,.4); }
+.s-hero-rule { width:1px; height:24px; background:linear-gradient(to bottom, rgba(196,154,40,.4), transparent); margin:16px auto; }
+.s-hero-sub { font-family:'EB Garamond',serif; font-size:14px; font-style:italic;
+  line-height:1.7; color:rgba(255,255,255,.52); max-width:460px; }
+
+/* ══════════════════════════════════════
+   S-CV — CONVICTION PANELS (website style)
+══════════════════════════════════════ */
+.s-cv { overflow:hidden; }
+.s-cv-inner { position:absolute; top:49px; left:0; right:0; bottom:28px;
+  display:grid; grid-template-columns:130px 1fr;
+  gap:0 44px; align-items:start; padding:36px 56px; }
+.s-cv-numeral { font-family:'Playfair Display',serif; font-size:144px; font-weight:700;
+  font-style:italic; line-height:.85; color:var(--ember); opacity:.15;
+  user-select:none; pointer-events:none; padding-top:4px; }
+.s-cv-body { padding-top:6px; display:flex; flex-direction:column; }
+.s-cv-label { font-family:'Source Sans 3',sans-serif; font-size:10px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ember); margin-bottom:12px; }
+.s-cv-headline { font-family:'Playfair Display',serif; font-size:46px; font-weight:700;
+  line-height:1.05; margin-bottom:14px; }
+.s-cv-text { font-family:'Source Sans 3',sans-serif; font-size:14px; font-weight:300;
+  line-height:1.75; max-width:540px; margin-bottom:18px; }
+.s-cv-pull { font-family:'Playfair Display',serif; font-size:15px; font-style:italic;
+  line-height:1.5; padding-left:16px; border-left:3px solid var(--ember); max-width:480px; }
+.s-cv-dark { background:var(--hearth); }
+.s-cv-dark .s-cv-headline { color:var(--linen); }
+.s-cv-dark .s-cv-text    { color:rgba(245,239,226,.65); }
+.s-cv-dark .s-cv-pull    { color:rgba(245,239,226,.8); }
+.s-cv-light { background:var(--linen); }
+.s-cv-light .s-cv-numeral  { opacity:.08; color:var(--walnut); }
+.s-cv-light .s-cv-headline { color:var(--hearth); }
+.s-cv-light .s-cv-text     { color:var(--walnut-md); }
+.s-cv-light .s-cv-pull     { color:var(--walnut); border-left-color:var(--ember); }
+
+/* ══════════════════════════════════════
+   S-CLOSE — CLOSING SLIDE
+══════════════════════════════════════ */
+.s-close { background:var(--linen); }
+.s-close-mark { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:52%; opacity:.03; mix-blend-mode:multiply;
+  pointer-events:none; user-select:none; z-index:1; }
+.s-close-content { position:absolute; top:49px; left:0; right:0; bottom:28px; z-index:5;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:32px 80px; text-align:center; }
+.s-close-trio { font-family:'Cormorant SC',serif; font-size:13px; letter-spacing:.28em;
+  color:var(--ember); margin-bottom:20px; }
+.s-close-rule { width:40px; height:1.5px; background:var(--ember); opacity:.7; margin-bottom:20px; }
+.s-close-body { font-family:'Playfair Display',serif; font-size:32px; font-weight:700;
+  line-height:1.3; color:var(--hearth); margin-bottom:28px; }
+.s-close-body em { color:var(--ember); font-style:italic; }
+.s-close-ask { font-family:'Playfair Display',serif; font-size:22px; font-weight:400;
+  font-style:italic; color:var(--walnut-md); }
+</style>
+</head>
+<body>
+<div id="deck"><div id="scaler">
+
+<!-- ══ S1 · TITLE ══ -->
+<section class="slide s1 active">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">California Stewardship Alliance</span>
+  <span class="ey">californiastewardship.org</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">Confidential — For city leadership</span>
+  <span class="ftr-r">1 / 14</span>
+</div>
+<div class="s1-center">
+  <div class="s1-kicker">California Stewardship Alliance</div>
+  <div class="s1-h1">Built from <em>First Principles</em></div>
+  <div class="s1-rule"></div>
+  <div class="s1-h2">A framework for housing, fire safety,<br>and the cities caught between them</div>
+  <div style="height:8px;"></div>
+  <div class="s1-url">californiastewardship.org</div>
+</div>
+</section>
+
+<!-- ══ S2 · PARADIGM SHIFT — GALILEO ══ -->
+<section class="slide s2">
+<div class="topbar"></div>
+<img class="s2-img" src="galileo.png" alt="Galileo's notebook — sketches of Jupiter's moons">
+<div class="s2-scrim"></div>
+<div class="hdr-dark">
+  <span class="ey">The Prerequisite</span>
+  <span class="ey">California Stewardship Alliance</span>
+</div>
+<div class="ftr-dark">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">2 / 14</span>
+</div>
+<div class="s2-content">
+  <div class="s2-pre">A Paradigm Shift</div>
+  <div class="s2-h1">The moons were<br>always there.<br><em>He simply looked.</em></div>
+  <div class="s2-rule"></div>
+  <div class="s2-body">Galileo didn't discover anything new. He made a measurement no one had bothered to make — and everything changed.</div>
+</div>
+<div class="s2-cap">
+  <div class="s2-cap-text">You've been working inside this system for years. What follows will ask you to see something familiar from a different angle —<br><em>and think about housing policy differently.</em></div>
+</div>
+</section>
+
+<!-- ══ S3 · THE FAILURE ══ -->
+<section class="slide s3">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">The Diagnosis</span>
+  <span class="ey">California Stewardship Alliance</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">3 / 14</span>
+</div>
+<div class="s3-layout">
+  <div class="s3-left">
+    <div class="s3-label">By Every Objective Measure</div>
+    <div class="s3-verdict">The mandate system has <em>not</em> produced affordable housing. It has <em>not</em> protected neighborhoods. It has produced one thing reliably: luxury product at scale — while working families fall further behind every year.</div>
+  </div>
+  <div class="s3-right">
+    <div class="s3-stat">
+      <div class="s3-stat-num">4.4%</div>
+      <div class="s3-stat-finding">of mandated affordable units actually permitted</div>
+      <div class="s3-stat-src">HCD 6th Cycle Data · Feb 2026</div>
+    </div>
+    <div class="s3-divider"></div>
+    <div class="s3-stat">
+      <div class="s3-stat-num">6×</div>
+      <div class="s3-stat-finding">the rate at which market-rate outpaces affordable</div>
+      <div class="s3-stat-src">Same dataset — the mandate's own scorecard</div>
+    </div>
+    <div class="s3-divider"></div>
+    <div class="s3-stat">
+      <div class="s3-stat-num">30,000+</div>
+      <div class="s3-stat-finding">structures destroyed — Paradise to the Palisades</div>
+      <div class="s3-stat-src">Camp Fire 2018 · 18,804 &nbsp;·&nbsp; Palisades &amp; Eaton 2025 · 12,000+ &nbsp;·&nbsp; Evacuation capacity: never calculated</div>
+    </div>
+  </div>
+</div>
+<div class="pbar">
+  <div class="pbar-rule"></div>
+  <div class="pbar-text">132 new bills this session. Affordability worse every year. <em>The dose keeps increasing. The patient keeps declining.</em></div>
+  <div class="pbar-rule"></div>
+</div>
+</section>
+
+<!-- ══ S4 · THE INVERSION ══ -->
+<section class="slide sinv">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">A New Relationship</span>
+  <span class="ey">Balanced Housing Framework</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">4 / 14</span>
+</div>
+<div class="sinv-subhdr">
+  <div class="sinv-subhdr-text">The state doesn't earn the right to mandate by passing a law. <em>It earns it by showing up with the infrastructure.</em></div>
+</div>
+<div class="sinv-cols">
+  <div class="sinv-col left">
+    <div class="sinv-col-label"><span>RHNA</span>The Mandate System</div>
+    <div class="sinv-body">The state decides how many homes your city must permit. It provides no funding, no infrastructure, and no tools to meet the number. When you fall short, it punishes you. When you comply, it moves on.</div>
+  </div>
+  <div class="sinv-divider"></div>
+  <div class="sinv-col right">
+    <div class="sinv-col-label"><span>BHF</span>The New Relationship</div>
+    <div class="sinv-body">Your city measures its own capacity. Your city decides whether to grow. If you choose to participate, the state invests alongside you — and you keep a share of the value your growth creates. The finish line is yours to set. The authority is yours to hold.</div>
+  </div>
+</div>
+<div class="pbar">
+  <div class="pbar-rule"></div>
+  <div class="pbar-text">Sacramento has never asked what your city can carry. <em>BHF makes that the first question.</em></div>
+  <div class="pbar-rule"></div>
+</div>
+</section>
+
+<!-- ══ S5 · FIRST PRINCIPLES ══ -->
+<section class="slide s4">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">Three Principles — Two Instruments</span>
+  <span class="ey">The Architecture</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">5 / 14</span>
+</div>
+<div class="s4-subhdr">
+  <span class="s4-subhdr-label">First Principles</span>
+  <span class="s4-subhdr-title">The pattern behind every claim CSA makes — and every tool we build.</span>
+</div>
+<div class="s4-cols">
+  <div class="s4-col">
+    <div class="s4-roman">I</div>
+    <div class="s4-col-title">Physical Reality</div>
+    <div class="s4-col-rule"></div>
+    <div class="s4-col-def">Every street has a measurable capacity. Measure it before you mandate on it.</div>
+  </div>
+  <div class="s4-col">
+    <div class="s4-roman">II</div>
+    <div class="s4-col-title">Fund Before Growth</div>
+    <div class="s4-col-rule"></div>
+    <div class="s4-col-def">Support flows first. Cities that build the infrastructure for growth receive the resources to do it.</div>
+  </div>
+  <div class="s4-col">
+    <div class="s4-roman">III</div>
+    <div class="s4-col-title">Freedom &amp; Fairness Are Baked In</div>
+    <div class="s4-col-rule"></div>
+    <div class="s4-col-def">Every standard is objective, every finding independently verifiable. No city can be penalized by a process it cannot audit.</div>
+  </div>
+</div>
+<div class="pbar">
+  <div class="pbar-rule"></div>
+  <div class="pbar-text">Objective. Verifiable. Defensible. <em>Three principles that survive any legal challenge — and every election cycle.</em></div>
+  <div class="pbar-rule"></div>
+</div>
+</section>
+
+<!-- ══ S6 · STREET CAPACITY ══ -->
+<section class="slide sst">
+<div class="topbar"></div>
+<img class="sst-img" src="street-capacity.png" alt="California residential street at golden hour">
+<div class="sst-scrim"></div>
+<div class="hdr-dark">
+  <span class="ey">Physical Reality</span>
+  <span class="ey">California Stewardship Alliance</span>
+</div>
+<div class="ftr-dark">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">6 / 14</span>
+</div>
+<div class="sst-sentence">
+  <div class="sst-sentence-text">Every street in California already knows how many homes it can hold.</div>
+</div>
+</section>
+
+<!-- ══ S7 · JOSH PROOF ══ -->
+<section class="slide spr">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">JOSH</span>
+  <span class="ey">Jurisdictional Objective Standards for Housing</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">7 / 14</span>
+</div>
+<div class="spr-layout">
+  <div class="spr-left">
+    <div class="spr-eyebrow">The Tool</div>
+    <div class="spr-sentence">Now we<br>can prove it.</div>
+    <div class="spr-rule"></div>
+    <div class="spr-sub">Jurisdictional Objective Standards<br>for Housing · AB 747</div>
+  </div>
+  <div class="spr-right">
+    <img class="spr-img" src="josh-berkeley.png" alt="JOSH fire evacuation capacity analysis — Berkeley">
+  </div>
+</div>
+</section>
+
+<!-- ══ S8 · BHF PRINCIPLE I — PHYSICAL REALITY ══ -->
+<section class="slide s5">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">Balanced Housing Framework</span>
+  <span class="ey">Principle I — Physical Reality</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">8 / 14</span>
+</div>
+<div class="s5-layout">
+  <div class="s5-left">
+    <div class="s5-label">The Measurement That Has Never Been Made</div>
+    <div class="s5-big">Every street has a <em>calculable</em> vehicular throughput capacity.</div>
+    <div class="s5-rule"></div>
+    <div class="s5-tri">
+      <div class="s5-tri-item">
+        <div class="s5-tri-title">Safety</div>
+        <div class="s5-tri-sub">Fire evacuation and emergency services capacity</div>
+      </div>
+      <div class="s5-tri-item">
+        <div class="s5-tri-title">Infrastructure</div>
+        <div class="s5-tri-sub">Streets, sewers, schools, power, water</div>
+      </div>
+      <div class="s5-tri-item">
+        <div class="s5-tri-title">Livability</div>
+        <div class="s5-tri-sub">An objective standard no court can dismiss</div>
+      </div>
+    </div>
+  </div>
+  <div class="s5-right">
+    <div class="s5-right-label">Capacity Limits — Applied Consistently</div>
+    <div class="s5-bars">
+      <div class="s5-bar-row">
+        <div>
+          <div class="s5-bar-name">Nightclub</div>
+          <div class="s5-bar-sub">Fire marshal occupancy</div>
+        </div>
+        <div>
+          <div class="s5-bar-track"><div class="s5-bar-fill yes"></div></div>
+        </div>
+        <div class="s5-bar-icon">✓</div>
+      </div>
+      <div class="s5-bar-row">
+        <div>
+          <div class="s5-bar-name">Bridge</div>
+          <div class="s5-bar-sub">Engineering load rating</div>
+        </div>
+        <div>
+          <div class="s5-bar-track"><div class="s5-bar-fill yes"></div></div>
+        </div>
+        <div class="s5-bar-icon">✓</div>
+      </div>
+      <div class="s5-bar-row">
+        <div>
+          <div class="s5-bar-name">Residential Street</div>
+          <div class="s5-bar-sub">Housing mandate capacity</div>
+        </div>
+        <div>
+          <div class="s5-bar-track"><div class="s5-bar-fill no"></div></div>
+        </div>
+        <div class="s5-bar-icon" style="color:var(--danger);">✗</div>
+      </div>
+    </div>
+    <div class="s5-note">
+      <div class="s5-note-text">Highway Capacity Manual methodology. Reproducible by any licensed engineer. <strong>Defensible in any proceeding.</strong></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══ S9 · BHF HERO ══ -->
+<section class="slide s-hero">
+<div class="topbar"></div>
+<div class="s-hero-bg"></div>
+<div class="s-hero-overlay"></div>
+<div class="hdr-dark">
+  <span class="ey">Balanced Housing Framework</span>
+  <span class="ey">California Stewardship Alliance</span>
+</div>
+<div class="ftr-dark">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">9 / 14</span>
+</div>
+<div class="s-hero-content">
+  <div class="s-hero-eyebrow">Balanced Housing Growth Management Act &nbsp;·&nbsp; California Constitutional Amendment</div>
+  <div class="s-hero-hl-wrap"><span class="s-hero-headline">Capacity Before Growth.</span></div>
+  <div class="s-hero-ballot">
+    <div class="s-hero-mark">&ldquo;</div>
+    <div class="s-hero-text">The State of California shall not impose housing mandates on any community without first establishing its physical capacity and funding the infrastructure required to support its growth.</div>
+    <div class="s-hero-attr">Ballot Measure Language</div>
+  </div>
+  <div class="s-hero-rule"></div>
+  <div class="s-hero-sub">California's housing crisis isn't a shortage of mandates. It's that Sacramento mandates growth without measuring what a community can absorb — or funding the infrastructure to support it.</div>
+</div>
+</section>
+
+<!-- ══ S10 · CV I — MEASURE ══ -->
+<section class="slide s-cv s-cv-dark">
+<div class="topbar"></div>
+<div class="hdr-dark">
+  <span class="ey">Balanced Housing Framework</span>
+  <span class="ey">I · Measure</span>
+</div>
+<div class="ftr-dark">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">10 / 14</span>
+</div>
+<div class="s-cv-inner">
+  <div class="s-cv-numeral">I</div>
+  <div class="s-cv-body">
+    <div class="s-cv-label">The First Step</div>
+    <div class="s-cv-headline">Measure.</div>
+    <div class="s-cv-text">Before any mandate, every street, sewer, school, power line, and water system is measured against a credentialed national standard. The number is objective. A court can verify it in an afternoon.</div>
+    <div class="s-cv-pull">Engineering facts become the foundation. Growth decisions stop being political.</div>
+  </div>
+</div>
+</section>
+
+<!-- ══ S11 · CV II — INVEST ══ -->
+<section class="slide s-cv s-cv-light">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">Balanced Housing Framework</span>
+  <span class="ey">II · Invest</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">11 / 14</span>
+</div>
+<div class="s-cv-inner">
+  <div class="s-cv-numeral">II</div>
+  <div class="s-cv-body">
+    <div class="s-cv-label">The Second Step</div>
+    <div class="s-cv-headline">Invest.</div>
+    <div class="s-cv-text">Before any mandate, Sacramento funds the infrastructure required to support growth. Roads, water, sewer, transit, evacuation routes. Investment comes first. That's not a regulation — that's a commitment.</div>
+    <div class="s-cv-pull">A state that invests before it asks earns the right to lead.</div>
+  </div>
+</div>
+</section>
+
+<!-- ══ S12 · CV III — GROW ══ -->
+<section class="slide s-cv s-cv-dark">
+<div class="topbar"></div>
+<div class="hdr-dark">
+  <span class="ey">Balanced Housing Framework</span>
+  <span class="ey">III · Grow</span>
+</div>
+<div class="ftr-dark">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">12 / 14</span>
+</div>
+<div class="s-cv-inner">
+  <div class="s-cv-numeral">III</div>
+  <div class="s-cv-body">
+    <div class="s-cv-label">The Third Step</div>
+    <div class="s-cv-headline">Grow.</div>
+    <div class="s-cv-text">Cities that certify their capacity get streamlined permitting, CEQA relief, and a revenue dividend on incremental tax growth. Growth is voluntary. The terms of certified growth reward cities that choose to participate.</div>
+    <div class="s-cv-pull">The rational choice is obvious. That's the design.</div>
+  </div>
+</div>
+</section>
+
+<!-- ══ S13 · CV IV — FREEDOM & EQUITY ══ -->
+<section class="slide s-cv s-cv-light">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">Balanced Housing Framework</span>
+  <span class="ey">IV · Freedom &amp; Equity</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">13 / 14</span>
+</div>
+<div class="s-cv-inner">
+  <div class="s-cv-numeral">IV</div>
+  <div class="s-cv-body">
+    <div class="s-cv-label">The Fourth Principle</div>
+    <div class="s-cv-headline">Freedom &amp; Equity.</div>
+    <div class="s-cv-text">No city is forced to grow. But the moment a city chooses to add homes, a minimum share must be within reach of the families who make a community work. Not aspirational. Constitutional.</div>
+    <div class="s-cv-pull">The public creates the conditions for growth. The public shares in what growth produces.</div>
+  </div>
+</div>
+</section>
+
+<!-- ══ S14 · CLOSE ══ -->
+<section class="slide s-close">
+<div class="topbar"></div>
+<div class="hdr">
+  <span class="ey">California Stewardship Alliance</span>
+  <span class="ey">Balanced Housing Framework</span>
+</div>
+<div class="ftr">
+  <span class="ftr-l">California Stewardship Alliance</span>
+  <span class="ftr-r">14 / 14</span>
+</div>
+<div class="s-close-content">
+  <div class="s-close-trio">Measured. Funded. Constitutional.</div>
+  <div class="s-close-rule"></div>
+  <div class="s-close-body">Housing that works for everyone isn't a wish —<br><em>it's ready.</em></div>
+  <div class="s-close-ask">Will you join us?</div>
+</div>
+</section>
+
+</div></div>
+
+<div id="nav">
+  <button class="nav-btn" id="prev-btn">‹</button>
+  <div id="counter">1 / 14</div>
+  <button class="nav-btn" id="next-btn">›</button>
+  <button id="fs-btn">⛶</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const counter = document.getElementById('counter');
+let cur = 0;
+function scaleSlides() {
+  const s = Math.min(window.innerWidth / 960, window.innerHeight / 540) * 0.97;
+  document.getElementById('scaler').style.transform = `scale(${s})`;
+}
+scaleSlides();
+window.addEventListener('resize', scaleSlides);
+function goTo(n) {
+  if (n < 0 || n >= slides.length) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit-left');
+  setTimeout(() => slides[cur].classList.remove('exit-left'), 370);
+  cur = n;
+  slides[cur].classList.add('active');
+  counter.textContent = `${cur + 1} / ${slides.length}`;
+  document.getElementById('prev-btn').style.opacity = cur === 0 ? '0.3' : '1';
+  document.getElementById('next-btn').style.opacity = cur === slides.length - 1 ? '0.3' : '1';
+}
+document.getElementById('prev-btn').addEventListener('click', () => goTo(cur - 1));
+document.getElementById('next-btn').addEventListener('click', () => goTo(cur + 1));
+document.getElementById('fs-btn').addEventListener('click', () => {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+});
+document.addEventListener('keydown', e => {
+  if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) { e.preventDefault(); goTo(cur + 1); }
+  if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { e.preventDefault(); goTo(cur - 1); }
+  if (e.key === 'f' || e.key === 'F') document.getElementById('fs-btn').click();
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(slides.length - 1);
+});
+let tx = 0;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = tx - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 40) goTo(cur + (dx > 0 ? 1 : -1));
+}, { passive: true });
+document.getElementById('deck').addEventListener('click', e => {
+  if (e.target.closest('#nav')) return;
+  goTo(cur + (e.clientX > window.innerWidth / 2 ? 1 : -1));
+});
+goTo(0);
+</script>
+</body>
+</html>
