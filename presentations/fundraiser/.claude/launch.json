@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8743"],
       "port": 8743
+    },
+    {
+      "name": "csf-media",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8744", "--directory", "/Users/twgonzalez/Dropbox/Documents/CSF/Media"],
+      "port": 8744
     }
   ]
 }
