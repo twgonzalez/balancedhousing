@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Balanced Housing Framework — A Primer</title>
+<meta name="description" content="A primer on the Balanced Housing Framework: a new architecture for California housing that turns the State from enforcer into partner.">
+<meta property="og:title" content="The Balanced Housing Framework — A Primer">
+<meta property="og:description" content="A new architecture for California housing. The State becomes a partner. Capacity is measured first. Investment comes first. Workforce housing follows.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+SC:wght@400;600&family=EB+Garamond:ital,wght@0,400;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --hearth:    #1a2438;
+  --hearth-md: #243350;
+  --ember:     #c49a28;
+  --ember-lt:  #dbb84a;
+  --linen:     #f5efe2;
+  --parch:     #ede4cf;
+  --parch-dk:  #dfd3b4;
+  --walnut:    #3a2e1e;
+  --walnut-md: #5a4a32;
+  --walnut-lt: #8a7458;
+  --rule:      #c8b07a;
+  --white:     #ffffff;
+  --max-w:     1120px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--linen);
+  color: var(--walnut);
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(26,36,56,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(196,154,40,.2);
+  padding: 0 40px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-wordmark {
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px; letter-spacing: .12em;
+  color: var(--linen); line-height: 1.2;
+}
+.nav-wordmark span { display: block; font-size: 12px; letter-spacing: .16em; color: var(--ember); }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: rgba(255,255,255,.6);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--ember); }
+.nav-cta {
+  background: var(--ember); color: var(--hearth) !important;
+  padding: 8px 20px; font-weight: 700 !important;
+  transition: background .2s !important;
+}
+.nav-cta:hover { background: var(--ember-lt) !important; color: var(--hearth) !important; }
+
+/* ── PAGE HERO (full-bleed photo) ── */
+.page-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+  background: var(--hearth);
+}
+.page-hero-bg {
+  position: absolute; inset: 0;
+  background: url('media/primer-hero.jpg') center center / cover no-repeat;
+}
+.page-hero-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(14,10,4,.85) 0%,
+      rgba(14,10,4,.42) 22%,
+      rgba(14,10,4,.32) 50%,
+      rgba(14,10,4,.52) 82%,
+      rgba(14,10,4,.78) 100%
+    );
+}
+.page-hero-inner {
+  position: relative; z-index: 2;
+  max-width: 860px; margin: 0 auto;
+  padding: 110px 40px 80px;
+  width: 100%;
+  text-align: center;
+}
+.page-hero-eyebrow {
+  font-family: 'Cormorant SC', serif;
+  font-size: 14px; letter-spacing: .28em;
+  color: var(--linen); margin-bottom: 32px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 14px rgba(14,10,4,.75);
+  opacity: 0; animation: fadeUp .8s .2s forwards;
+}
+.page-hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5.4vw, 64px); font-weight: 700;
+  line-height: 1.1; color: var(--linen);
+  margin: 0 auto 32px;
+  text-shadow: 0 2px 24px rgba(14,10,4,.5);
+  opacity: 0; animation: fadeUp .8s .35s forwards;
+}
+.page-hero-title em { color: var(--ember); font-style: italic; }
+.page-hero-rule {
+  width: 72px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196,154,40,.7), transparent);
+  margin: 0 auto 32px;
+  opacity: 0; animation: fadeUp .8s .5s forwards;
+}
+.page-hero-sub {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(16px, 1.9vw, 21px); font-style: italic;
+  color: rgba(245,239,226,.78); max-width: 560px;
+  margin: 0 auto; line-height: 1.65;
+  text-shadow: 0 1px 12px rgba(14,10,4,.5);
+  opacity: 0; animation: fadeUp .8s .65s forwards;
+}
+
+/* ── SECTION SHARED ── */
+section { padding: 96px 40px; }
+.section-inner { max-width: var(--max-w); margin: 0 auto; }
+.section-eyebrow {
+  font-family: 'Cormorant SC', serif;
+  font-size: 17px; letter-spacing: .16em;
+  color: var(--ember); margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.5vw, 42px); font-weight: 700;
+  line-height: 1.15; color: var(--hearth);
+  margin-bottom: 8px;
+}
+.section-title em { color: var(--ember); font-style: italic; }
+.section-rule {
+  width: 40px; height: 2px; background: var(--ember);
+  opacity: .7; margin-bottom: 24px;
+}
+.section-lead {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(16px, 1.8vw, 20px); font-style: italic;
+  line-height: 1.65; color: var(--walnut-md);
+  max-width: 680px; margin-bottom: 48px;
+}
+
+/* ── PROSE SECTIONS ── */
+.prose-section { background: var(--linen); padding: 88px 40px; }
+.prose-section.tight { padding-top: 0; }
+.prose-section.on-parch { background: var(--parch); border-top: 1px solid var(--parch-dk); border-bottom: 1px solid var(--parch-dk); }
+.prose-inner { max-width: 720px; margin: 0 auto; }
+.prose-body p {
+  font-family: 'EB Garamond', serif;
+  font-size: 19px; line-height: 1.75;
+  color: var(--walnut); margin-bottom: 24px;
+}
+.prose-body p:last-child { margin-bottom: 0; }
+.prose-body em { color: var(--hearth); font-style: italic; }
+.prose-body strong { color: var(--hearth); font-weight: 700; font-style: normal; }
+
+/* ── EQUATION CALLOUT ── */
+.equation-callout {
+  margin: 48px auto 16px;
+  max-width: 760px;
+  padding: 36px 32px;
+  text-align: center;
+  border-top: 1px solid rgba(196,154,40,.4);
+  border-bottom: 1px solid rgba(196,154,40,.4);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.35;
+  color: var(--hearth);
+}
+.equation-callout .op {
+  color: var(--ember);
+  font-style: italic;
+  font-weight: 400;
+  margin: 0 14px;
+  display: inline-block;
+}
+.equation-callout .result { color: var(--ember); }
+
+/* ── INVERSION DIAGRAM ── */
+.inversion {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 56px auto 24px;
+  max-width: 920px;
+}
+.inversion-col {
+  background: var(--linen);
+  border: 1px solid var(--parch-dk);
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+}
+.inversion-col.before { border-top: 3px solid rgba(58,46,30,.3); }
+.inversion-col.after  { border-top: 3px solid var(--ember); background: #fbf6ea; }
+.inversion-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ember); margin-bottom: 20px;
+}
+.inversion-col.before .inversion-label { color: var(--walnut-lt); }
+.inversion-flow { display: flex; flex-direction: column; gap: 0; flex: 1; list-style: none; }
+.inversion-step {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px; line-height: 1.5;
+  color: var(--walnut);
+  padding: 14px 16px;
+  background: var(--parch);
+  border-top: 2px solid var(--ember);
+  text-align: center;
+}
+.inversion-col.before .inversion-step {
+  border-top-color: var(--walnut-lt);
+  color: var(--walnut-md);
+  background: rgba(58,46,30,.05);
+}
+.inversion-arrow {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--ember);
+  text-align: center;
+  padding: 8px 0;
+  opacity: .7;
+}
+.inversion-col.before .inversion-arrow { color: var(--walnut-lt); }
+.inversion-caption {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--walnut-lt);
+  text-align: center;
+  margin-top: 8px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── AMENDMENT QUOTE ── */
+.amendment-quote {
+  position: relative;
+  max-width: 800px;
+  margin: 56px auto 0;
+  padding: 40px 0 0;
+}
+.amendment-quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px, 12vw, 140px);
+  line-height: .6;
+  color: var(--ember);
+  opacity: .22;
+  position: absolute;
+  top: 8px; left: -12px;
+  pointer-events: none; user-select: none;
+}
+.amendment-quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 2.5vw, 30px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--hearth);
+  position: relative; z-index: 1;
+  padding-left: 40px;
+}
+.amendment-quote-attr {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ember);
+  margin-top: 28px;
+  padding-left: 40px;
+  display: flex; align-items: center; gap: 14px;
+}
+.amendment-quote-attr::before {
+  content: ''; display: block;
+  width: 24px; height: 1px;
+  background: var(--ember); opacity: .5;
+}
+
+/* ── MOVES HEADER ── */
+.moves-header {
+  background: var(--linen);
+  padding: 88px 40px 24px;
+  text-align: center;
+}
+.moves-header .section-eyebrow { color: var(--ember); }
+.moves-header .section-rule { margin: 24px auto 0; }
+
+/* ── CONVICTION PANELS ── */
+.conviction { position: relative; overflow: hidden; }
+.conviction-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 80px 40px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0 64px;
+  align-items: start;
+}
+.conviction-numeral {
+  font-family: 'Playfair Display', serif;
+  font-size: 180px; font-weight: 700; font-style: italic;
+  line-height: .85;
+  color: var(--ember); opacity: .15;
+  user-select: none; pointer-events: none;
+  padding-top: 8px;
+}
+.conviction-body { padding-top: 12px; }
+.conviction-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--ember); margin-bottom: 20px;
+}
+.conviction-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3.6vw, 44px);
+  font-weight: 700; line-height: 1.1;
+  margin-bottom: 24px;
+}
+.conviction-text {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 300; line-height: 1.75;
+  max-width: 620px; margin-bottom: 32px;
+}
+.conviction-pull {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(16px, 1.8vw, 21px);
+  font-style: italic; line-height: 1.5;
+  padding-left: 20px;
+  border-left: 3px solid var(--ember);
+  max-width: 520px;
+}
+.conviction-dark { background: var(--hearth); }
+.conviction-dark .conviction-headline { color: var(--linen); }
+.conviction-dark .conviction-text     { color: rgba(245,239,226,.65); }
+.conviction-dark .conviction-pull     { color: rgba(245,239,226,.8); }
+.conviction-light {
+  background: var(--parch);
+  border-top: 1px solid var(--parch-dk);
+  border-bottom: 1px solid var(--parch-dk);
+}
+.conviction-light .conviction-numeral { opacity: .08; color: var(--walnut); }
+.conviction-light .conviction-headline { color: var(--hearth); }
+.conviction-light .conviction-text     { color: var(--walnut-md); }
+.conviction-light .conviction-pull     { color: var(--walnut); border-left-color: var(--ember); }
+
+/* ── OUTCOMES LIST (Section 6) ── */
+.produces { background: var(--hearth); }
+.produces .section-eyebrow { color: var(--ember); }
+.produces .section-title { color: #fff; }
+.produces .section-lead { color: rgba(255,255,255,.55); }
+.outcomes-list {
+  margin-top: 48px;
+  border-top: 1px solid rgba(196,154,40,.25);
+}
+.outcome {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 40px;
+  padding: 26px 0;
+  border-bottom: 1px solid rgba(196,154,40,.12);
+  align-items: baseline;
+}
+.outcome-label {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ember);
+}
+.outcome-text {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(17px, 1.8vw, 20px);
+  line-height: 1.55;
+  color: rgba(245,239,226,.82);
+}
+.produces-closer {
+  margin: 48px auto 0;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(18px, 2vw, 22px);
+  color: rgba(245,239,226,.9);
+  max-width: 720px;
+  line-height: 1.5;
+  padding-top: 32px;
+  border-top: 1px solid rgba(196,154,40,.2);
+}
+
+/* ── CLOSER (An invitation) ── */
+.closer { background: var(--linen); }
+.closer .prose-inner { max-width: 720px; }
+
+/* ── CTA CARDS ── */
+.ctas { background: var(--parch); }
+.ctas .section-eyebrow { color: var(--ember); }
+.cta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-top: 48px;
+}
+.cta-card {
+  background: var(--linen);
+  border: 1px solid var(--parch-dk);
+  border-top: 3px solid var(--rule);
+  padding: 32px 28px;
+  display: flex; flex-direction: column;
+  transition: transform .2s, box-shadow .2s;
+}
+.cta-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,36,56,.12); }
+.cta-card.featured { background: var(--hearth); border-color: transparent; border-top-color: var(--ember); }
+.cta-icon { font-size: 28px; margin-bottom: 16px; line-height: 1; color: var(--ember); }
+.cta-card.featured .cta-icon { color: var(--ember); }
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--hearth);
+  margin-bottom: 8px;
+}
+.cta-card.featured .cta-title { color: #fff; }
+.cta-desc {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px; line-height: 1.6; color: var(--walnut-md);
+  flex: 1; margin-bottom: 24px;
+}
+.cta-card.featured .cta-desc { color: rgba(255,255,255,.55); }
+.cta-btn {
+  display: inline-block; text-decoration: none; text-align: center;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; padding: 12px 24px;
+  background: var(--hearth); color: #fff;
+  transition: background .2s;
+}
+.cta-btn:hover { background: var(--hearth-md); }
+.cta-card.featured .cta-btn { background: var(--ember); color: var(--hearth); }
+.cta-card.featured .cta-btn:hover { background: var(--ember-lt); }
+.cta-card.coming-soon {
+  background: transparent;
+  border: 1px dashed var(--parch-dk);
+  border-top: 3px dashed var(--rule);
+  opacity: .7;
+}
+.cta-card.coming-soon:hover { transform: none; box-shadow: none; opacity: .85; }
+.cta-card.coming-soon .cta-title,
+.cta-card.coming-soon .cta-icon { color: var(--walnut-lt); }
+.cta-card.coming-soon .cta-btn {
+  background: transparent; color: var(--walnut-lt);
+  border: 1px solid var(--parch-dk);
+  cursor: default; pointer-events: none;
+  letter-spacing: .12em;
+}
+.cta-card.coming-soon .cta-btn:hover { background: transparent; }
+
+/* ── EMAIL SIGNUP ── */
+.signup { background: var(--hearth); padding: 80px 40px; }
+.signup-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+.signup .section-eyebrow { text-align: center; display: block; margin-bottom: 16px; }
+.signup-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 3vw, 38px); font-weight: 700;
+  color: #fff; line-height: 1.2; margin-bottom: 12px;
+}
+.signup-sub {
+  font-family: 'EB Garamond', serif;
+  font-size: 17px; font-style: italic;
+  color: rgba(255,255,255,.5); margin-bottom: 36px; line-height: 1.6;
+}
+.signup-form { display: flex; gap: 0; max-width: 480px; margin: 0 auto; }
+.signup-input {
+  flex: 1; padding: 14px 18px;
+  font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+  background: rgba(255,255,255,.08);
+  border: 1.5px solid rgba(196,154,40,.3);
+  border-right: none;
+  color: #fff; outline: none;
+  transition: border-color .2s;
+}
+.signup-input::placeholder { color: rgba(255,255,255,.3); }
+.signup-input:focus { border-color: var(--ember); }
+.signup-submit {
+  background: var(--ember); color: var(--hearth);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 16px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; padding: 14px 24px;
+  border: none; cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.signup-submit:hover { background: var(--ember-lt); }
+.signup-privacy {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; color: rgba(255,255,255,.25);
+  margin-top: 12px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #0e0c08;
+  padding: 48px 40px 32px;
+  border-top: 1px solid rgba(196,154,40,.15);
+}
+.footer-inner {
+  max-width: var(--max-w); margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 40px; flex-wrap: wrap;
+}
+.footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.footer-name {
+  font-family: 'Cormorant SC', serif;
+  font-size: 15px; letter-spacing: .10em;
+  color: rgba(255,255,255,.5);
+}
+.footer-tag {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; font-style: italic;
+  color: var(--ember); opacity: .7;
+}
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; list-style: none; align-items: center; }
+.footer-links a {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; letter-spacing: .07em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--ember); }
+.footer-copy {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px; color: rgba(255,255,255,.2);
+  margin-top: 32px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  text-align: center;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── HAMBURGER ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column; justify-content: space-between;
+  width: 24px; height: 18px;
+  background: none; border: none; cursor: pointer; padding: 0;
+}
+.nav-hamburger span {
+  display: block; width: 100%; height: 2px;
+  background: var(--linen); border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.nav-overlay { display: none; position: fixed; inset: 0; z-index: 97; }
+.nav-overlay.open { display: block; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-hamburger { display: flex; }
+  .nav-links {
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(26,36,56,.97);
+    backdrop-filter: blur(8px);
+    padding: 76px 20px 24px;
+    gap: 4px; list-style: none;
+    transform: translateY(-100%);
+    transition: transform .3s ease;
+    z-index: 98;
+    border-bottom: 1px solid rgba(196,154,40,.2);
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block; padding: 12px 8px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(196,154,40,.1);
+  }
+  .nav-links li:last-child a { border-bottom: none; margin-top: 8px; text-align: center; }
+  section { padding: 64px 24px; }
+  .page-hero { padding: 0; }
+  .page-hero-inner { padding: 90px 24px 60px; }
+  .prose-section { padding: 64px 24px; }
+  .moves-header { padding: 64px 24px 16px; }
+  .conviction-inner {
+    grid-template-columns: 1fr;
+    padding: 56px 24px;
+    gap: 0;
+  }
+  .conviction-numeral { font-size: 96px; opacity: .1; line-height: 1; margin-bottom: 8px; }
+  .inversion { grid-template-columns: 1fr; gap: 16px; }
+  .amendment-quote-text, .amendment-quote-attr { padding-left: 24px; }
+  .amendment-quote-mark { font-size: 80px; left: -4px; }
+  .outcome { grid-template-columns: 1fr; gap: 8px; padding: 22px 0; }
+  .signup-form { flex-direction: column; }
+  .signup-input { border-right: 1.5px solid rgba(196,154,40,.3); border-bottom: none; }
+  .footer-inner { flex-direction: column; gap: 24px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nav-overlay" id="navOverlay"></div>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-wordmark">
+      Balanced Housing
+      <span>balancedhousing.org</span>
+    </div>
+  </a>
+  <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="index.html#how">The Framework</a></li>
+    <li><a href="index.html#analysis">Analysis</a></li>
+    <li><a href="#signup" class="nav-cta">Stay Informed</a></li>
+  </ul>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-eyebrow">A Primer</div>
+    <h1 class="page-hero-title">The Balanced Housing <em>Framework.</em></h1>
+    <div class="page-hero-rule"></div>
+    <p class="page-hero-sub">A new architecture for California housing.</p>
+  </div>
+</section>
+
+<!-- ── §1 What we share ── -->
+<section class="prose-section reveal">
+  <div class="prose-inner">
+    <div class="section-eyebrow">Common Ground</div>
+    <h2 class="section-title">What we <em>share.</em></h2>
+    <div class="section-rule"></div>
+    <div class="prose-body">
+      <p>Every Californian can see what the current housing system is producing. The teacher commuting two counties to work. The nurse priced out of the town where she runs the ER. The neighborhoods changing in ways no one chose. The lawsuits where homes should be.</p>
+      <p>The Legislature has worked hard on this for a decade. So have the cities, the builders, the housing advocates, the environmentalists. Good people, in good faith, working inside a system that produces this anyway.</p>
+      <p>This is not a failure of effort. <strong>It's a failure of architecture.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── §2 What needs to change ── -->
+<section class="prose-section on-parch reveal">
+  <div class="prose-inner">
+    <div class="section-eyebrow">What Needs to Change</div>
+    <h2 class="section-title">Architecture, <em>not effort.</em></h2>
+    <div class="section-rule"></div>
+    <div class="prose-body">
+      <p>The current rules pit the State against cities, mandates against capacity, builders against communities. When the system itself is built for conflict, no amount of effort or good faith can produce aligned outcomes. Change the design, and the same people produce different results.</p>
+      <p>The Balanced Housing Framework is that architecture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── §3 The inversion ── -->
+<section class="prose-section reveal">
+  <div class="prose-inner">
+    <div class="section-eyebrow">A New Direction</div>
+    <h2 class="section-title">The <em>inversion.</em></h2>
+    <div class="section-rule"></div>
+    <div class="prose-body">
+      <p>The current system tries to bring people to opportunity — forcing density into the most expensive places, overriding local planning to make it happen.</p>
+      <p><strong>The Framework brings opportunity to people.</strong></p>
+      <p>The State stops being an enforcer and becomes a partner. It invests in communities that want to grow, funds the infrastructure that makes growth livable, and helps create the next generation of California where it can actually be built — with the workforce living in the places where they work, in homes they can afford.</p>
+      <p>A simple structural sequence:</p>
+    </div>
+
+    <div class="equation-callout">
+      <span>Capacity first</span><span class="op">+</span><span>investment</span><span class="op">=</span><span class="result">workforce housing</span>
+    </div>
+
+    <div class="prose-body" style="margin-top:24px;">
+      <p>Every other provision exists to make that sequence enforceable.</p>
+    </div>
+  </div>
+
+  <!-- Inversion diagram -->
+  <div class="inversion">
+    <div class="inversion-col before">
+      <div class="inversion-label">Current System</div>
+      <ul class="inversion-flow">
+        <li class="inversion-step">State mandates housing growth top-down</li>
+        <li class="inversion-arrow">↓</li>
+        <li class="inversion-step">Cities forced to absorb without capacity or funding</li>
+        <li class="inversion-arrow">↓</li>
+        <li class="inversion-step">Luxury units, litigation, no workforce homes</li>
+      </ul>
+    </div>
+    <div class="inversion-col after">
+      <div class="inversion-label">The Framework</div>
+      <ul class="inversion-flow">
+        <li class="inversion-step">Communities measure their own capacity</li>
+        <li class="inversion-arrow">↓</li>
+        <li class="inversion-step">State invests in the growth communities choose</li>
+        <li class="inversion-arrow">↓</li>
+        <li class="inversion-step">Workforce housing built where infrastructure exists</li>
+      </ul>
+    </div>
+  </div>
+  <p class="inversion-caption">The inversion: from top-down mandate to partnership-led investment.</p>
+</section>
+
+<!-- ── §4 The constitutional anchor ── -->
+<section class="prose-section on-parch reveal">
+  <div class="prose-inner">
+    <div class="section-eyebrow">Constitutional Architecture</div>
+    <h2 class="section-title">The constitutional <em>anchor.</em></h2>
+    <div class="section-rule"></div>
+    <div class="prose-body">
+      <p>California is one of eighteen states where citizens can write rules directly into the state constitution — rules that outlast any future legislature or administration, regardless of party. The Coastal Commission was installed this way in 1972. Proposition 13 in 1978. Both are still standing.</p>
+      <p>One sentence anchors the new architecture:</p>
+    </div>
+
+    <div class="amendment-quote">
+      <div class="amendment-quote-mark">&ldquo;</div>
+      <div class="amendment-quote-text">The State of California shall not impose housing mandates on any community without first establishing its physical capacity and funding the infrastructure required to support its growth.</div>
+      <div class="amendment-quote-attr">Proposed Constitutional Amendment</div>
+    </div>
+
+    <div class="prose-body" style="margin-top:48px;">
+      <p>Once enacted, it stands the way the Coastal Commission stands — beyond the reach of any one Sacramento cycle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── §5 The four moves ── -->
+<div class="moves-header reveal">
+  <div class="section-eyebrow">The Mechanism</div>
+  <h2 class="section-title">The four <em>moves.</em></h2>
+  <div class="section-rule"></div>
+</div>
+
+<section class="conviction conviction-dark reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">I</div>
+    <div class="conviction-body">
+      <div class="conviction-label">Move One</div>
+      <h3 class="conviction-headline">Communities measure their own capacity.</h3>
+      <p class="conviction-text">Real engineering — streets, water, sewer, evacuation routes, schools. Peer-reviewed standards. Numbers a court can verify.</p>
+      <p class="conviction-pull">Measurement before mandate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="conviction conviction-light reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">II</div>
+    <div class="conviction-body">
+      <div class="conviction-label">Move Two</div>
+      <h3 class="conviction-headline">The State funds the growth communities choose.</h3>
+      <p class="conviction-text">Investment flows to communities that want to build — bringing roads, schools, transit, and emergency services to places that have been ready to grow but starved of resources.</p>
+      <p class="conviction-pull">Partnership where there used to be pressure.</p>
+    </div>
+  </div>
+</section>
+
+<section class="conviction conviction-dark reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">III</div>
+    <div class="conviction-body">
+      <div class="conviction-label">Move Three</div>
+      <h3 class="conviction-headline">Cities decide whether to grow — and on what terms.</h3>
+      <p class="conviction-text">No community is forced to add housing. A city that grows accepts one constitutional condition: a share of new homes stays accessible to the workforce the community depends on — teachers, nurses, tradespeople, first responders. Not just at the moment of construction — at every sale, for as long as the home stands.</p>
+      <p class="conviction-pull">Affordable at every sale. For as long as the home stands.</p>
+    </div>
+  </div>
+</section>
+
+<section class="conviction conviction-light reveal">
+  <div class="conviction-inner">
+    <div class="conviction-numeral">IV</div>
+    <div class="conviction-body">
+      <div class="conviction-label">Move Four</div>
+      <h3 class="conviction-headline">Builders get a clock.</h3>
+      <p class="conviction-text">Complete applications that meet a city's standards get approved on a published timeline — with automatic approval if the city misses the window. Predictability replaces litigation.</p>
+      <p class="conviction-pull">Permits become homes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── §6 What alignment produces ── -->
+<section class="produces reveal">
+  <div class="section-inner">
+    <div class="section-eyebrow">Aligned Outcomes</div>
+    <h2 class="section-title">What alignment <em>produces.</em></h2>
+    <div class="section-rule"></div>
+    <p class="section-lead">When the architecture aligns, each constituency gets what they actually wanted.</p>
+
+    <div class="outcomes-list">
+      <div class="outcome">
+        <div class="outcome-label">Working Families</div>
+        <div class="outcome-text">Homes they can afford in the communities where they work.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Existing Residents</div>
+        <div class="outcome-text">The social contract of homeownership honored, decisions made locally.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Growth-Welcoming Communities</div>
+        <div class="outcome-text">Investment to become real communities instead of commuter overflow.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Cities That Choose Growth</div>
+        <div class="outcome-text">Infrastructure, control over what growth looks like, a defined endpoint to the housing obligation.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Builders</div>
+        <div class="outcome-text">Projects that finance against a clock instead of a court calendar.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">The State</div>
+        <div class="outcome-text">Housing production instead of housing litigation.</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-label">Environmentalists</div>
+        <div class="outcome-text">Growth routed to where infrastructure exists, designed around the systems it depends on.</div>
+      </div>
+    </div>
+
+    <p class="produces-closer">These aren't compromises. They aren't trades where everyone gets a little less. They're what happens when the rules align the interests that the current system forces into conflict — and balance follows.</p>
+  </div>
+</section>
+
+<!-- ── §7 An invitation ── -->
+<section class="prose-section closer reveal">
+  <div class="prose-inner">
+    <div class="section-eyebrow">Where You Come In</div>
+    <h2 class="section-title">An <em>invitation.</em></h2>
+    <div class="section-rule"></div>
+    <div class="prose-body">
+      <p>The Framework is being prepared for the 2030 ballot. Legal counsel is stress-testing the architecture. Academic reviewers are vetting the constitutional design. The coalition is forming across the constituencies the Framework serves — cities, working families, environmental partners, infrastructure unions, affordable housing advocates.</p>
+      <p>If you've been working on California housing — in the Legislature, at HCD, in city hall, in the building trades, in the advocacy community — this is an architecture you can walk toward.</p>
+      <p>If you've been watching this work for a decade and suspecting the answer is structural — <strong>this is that.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA CARDS ── -->
+<section class="ctas reveal">
+  <div class="section-inner">
+    <div class="section-eyebrow">Learn More</div>
+    <h2 class="section-title">Go <em>deeper.</em></h2>
+    <div class="section-rule"></div>
+    <div class="cta-grid">
+      <div class="cta-card coming-soon">
+        <div class="cta-icon">◧</div>
+        <div class="cta-title">Executive Brief</div>
+        <div class="cta-desc">For policy professionals and elected officials evaluating the architecture. A focused read on the constitutional mechanism, fiscal model, and implementation timeline.</div>
+        <a href="#" class="cta-btn" aria-disabled="true">Coming Soon</a>
+      </div>
+      <div class="cta-card coming-soon">
+        <div class="cta-icon">◨</div>
+        <div class="cta-title">Full Framework Document</div>
+        <div class="cta-desc">For legal counsel, academic stress-testers, and policy professionals. The complete working draft with sourced argumentation and mechanism design.</div>
+        <a href="#" class="cta-btn" aria-disabled="true">Coming Soon</a>
+      </div>
+      <div class="cta-card featured">
+        <div class="cta-icon">✦</div>
+        <div class="cta-title">Join the Coalition</div>
+        <div class="cta-desc">Get on the list, attend an event, or volunteer. Updates on cities, legislation, and coalition progress as the Framework moves toward the ballot.</div>
+        <a href="#signup" class="cta-btn">Get Involved</a>
+      </div>
+      <div class="cta-card">
+        <div class="cta-icon">✉</div>
+        <div class="cta-title">Contact Us</div>
+        <div class="cta-desc">For questions, partnership inquiries, and press. We respond to substantive engagement from journalists, policymakers, and prospective coalition members.</div>
+        <a href="#signup" class="cta-btn">Reach Out</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EMAIL SIGNUP ── -->
+<section class="signup" id="signup">
+  <div class="signup-inner">
+    <span class="section-eyebrow">Join the Movement</span>
+    <div class="signup-title">Capacity Before Growth.</div>
+    <p class="signup-sub">Get updates as the Balanced Housing Framework moves toward the California ballot.</p>
+    <form class="signup-form" onsubmit="return false;">
+      <input type="email" class="signup-input" placeholder="Your email address">
+      <button type="submit" class="signup-submit">Stay Informed</button>
+    </form>
+    <p class="signup-privacy">No spam. Unsubscribe anytime. Your information is never shared.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <div class="footer-name">California Stewardship Alliance</div>
+      </div>
+      <div class="footer-tag">Capacity Before Growth.</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#how">Framework</a></li>
+      <li><a href="index.html#analysis">Analysis</a></li>
+      <li><a href="#signup">Sign Up</a></li>
+      <li><a href="https://californiastewardship.org" target="_blank" rel="noopener">californiastewardship.org</a></li>
+    </ul>
+  </div>
+  <div class="footer-copy">© 2026 California Stewardship Alliance · balancedhousing.org · All rights reserved.</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      const children = e.target.querySelectorAll('.reveal');
+      children.forEach((child, i) => {
+        setTimeout(() => child.classList.add('visible'), i * 100);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const hamburger = document.querySelector('.nav-hamburger');
+const navLinks = document.querySelector('.nav-links');
+const navOverlay = document.getElementById('navOverlay');
+function closeMenu() {
+  hamburger.classList.remove('open');
+  navLinks.classList.remove('open');
+  navOverlay.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', false);
+}
+hamburger.addEventListener('click', () => {
+  const open = hamburger.classList.toggle('open');
+  navLinks.classList.toggle('open', open);
+  navOverlay.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+});
+navOverlay.addEventListener('click', closeMenu);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 60) {
+    nav.style.borderBottomColor = 'rgba(196,154,40,.3)';
+  } else {
+    nav.style.borderBottomColor = 'rgba(196,154,40,.2)';
+  }
+});
+</script>
+
+</body>
+</html>
